@@ -1,4 +1,4 @@
-package br.com.llservicos.domain.usuario;
+package br.com.llservicos.domain.usuario.dtos;
 
 import jakarta.validation.constraints.NotBlank;
 
