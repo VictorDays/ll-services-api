@@ -2,8 +2,10 @@ package br.com.llservicos.domain.pessoa;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.MappedSuperclass;
 
 @Entity
+@MappedSuperclass
 public class PessoaModel {
 
     @Id
