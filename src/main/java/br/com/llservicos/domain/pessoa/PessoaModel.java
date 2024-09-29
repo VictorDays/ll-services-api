@@ -1,5 +1,6 @@
 package br.com.llservicos.domain.pessoa;
 
+import br.com.llservicos.domain.endereco.EnderecoModel;
 import jakarta.persistence.*;
 
 @Entity
@@ -11,6 +12,10 @@ public class PessoaModel {
     private String nome ;
     private String email;
     private String telefone;
+
+    @OneToOne
+    @JoinColumn(name = "endereco_id", referencedColumnName = "id")
+    private EnderecoModel endereco;
 
     public void setId(Long id) {
         this.id = id;
@@ -42,5 +47,12 @@ public class PessoaModel {
 
     public void setTelefone(String telefone) {
         this.telefone = telefone;
+    }
+
+    public EnderecoModel getEndereco() {
+        return endereco;
+    }
+    public void setEndereco(EnderecoModel endereco) {
+        this.endereco = endereco;
     }
 }
