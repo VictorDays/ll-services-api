@@ -1,7 +1,7 @@
-package br.com.llservicos.domain.pessoa;
+package br.com.llservicos.domain.pessoa.dtos;
 
 
-import br.com.llservicos.domain.usuario.UsuarioModel;
+import br.com.llservicos.domain.pessoa.PessoaModel;
 import br.com.llservicos.domain.usuario.dtos.UsuarioResponseDTO;
 
 public record PessoaResponseDTO(
@@ -19,7 +19,7 @@ public record PessoaResponseDTO(
                 pessoa.getNome(),
                 pessoa.getEmail(),
                 pessoa.getUsuario().getTelefone(),
-                UsuarioResponseDTO.
+                UsuarioResponseDTO.valueOf(pessoa.getUsuario())
         );
     }
 }

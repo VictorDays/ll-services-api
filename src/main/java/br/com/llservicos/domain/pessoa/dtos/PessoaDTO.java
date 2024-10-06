@@ -1,4 +1,4 @@
-package br.com.llservicos.domain.pessoa;
+package br.com.llservicos.domain.pessoa.dtos;
 
 import br.com.llservicos.domain.usuario.dtos.UsuarioDTO;
 import jakarta.validation.constraints.Email;

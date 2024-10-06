@@ -21,17 +21,7 @@ public class UsuarioRepository implements PanacheRepository<UsuarioModel> {
         return find("UPPER(nome) LIKE UPPER(?1)", "%" + nome + "%").list();
     }
 
-    public PanacheQuery<UsuarioModel> findByLogin(String login) {
-        if (login == null || login.isEmpty()) {
-            return null;
-        }
-        return find("login = ?1", login);
-    }
-
-    public PanacheQuery<UsuarioModel> findByLoginAndSenha(String login, String senha) {
-        if (login == null || login.isEmpty() || senha == null || senha.isEmpty()) {
-            return null;
-        }
-        return find("login = ?1 AND senha = ?2", login, senha);
+    public Optional<UsuarioModel> login(String telefone, String senha) {
+        return find("telefone = ?1 and senha = ?2", telefone, senha).firstResultOptional();
     }
 }

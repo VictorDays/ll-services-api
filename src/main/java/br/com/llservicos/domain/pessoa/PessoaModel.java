@@ -1,16 +1,26 @@
 package br.com.llservicos.domain.pessoa;
 
+import br.com.llservicos.domain.endereco.EnderecoModel;
+import br.com.llservicos.domain.usuario.UsuarioModel;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+
+import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class PessoaModel {
-
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome ;
+    @Email
     private String email;
-    private String telefone;
+    @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<EnderecoModel> enderecos;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "usuario_id", referencedColumnName = "id")
+    private UsuarioModel usuario;
 
     public void setId(Long id) {
         this.id = id;
@@ -36,11 +46,18 @@ public class PessoaModel {
         this.email = email;
     }
 
-    public String getTelefone() {
-        return telefone;
+    public UsuarioModel getUsuario() {
+        return usuario;
+    }
+    public void setUsuario(UsuarioModel usuarioModel) {
+        this.usuario = usuarioModel;
     }
 
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
+    public List<EnderecoModel> getEnderecos() {
+        return enderecos;
+    }
+
+    public void setEnderecos(List<EnderecoModel> enderecos) {
+        this.enderecos = enderecos;
     }
 }

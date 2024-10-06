@@ -1,22 +1,25 @@
 package br.com.llservicos.domain.usuario;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 
 @Entity
 public class UsuarioModel {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String email;
+    @Email
+    private String telefone;
     private String senha;
+    @Enumerated(EnumType.STRING)
     private Perfil perfil;
 
-    public String getEmail() {
-        return email;
+    public String getTelefone() {
+        return telefone;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
 
     public void setId(Long id) {

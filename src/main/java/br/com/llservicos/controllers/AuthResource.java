@@ -2,7 +2,7 @@ package br.com.llservicos.controllers;
 
 import br.com.llservicos.config.GenerationToken.Hash.HashService;
 import br.com.llservicos.config.GenerationToken.Jwt.JwtService;
-import br.com.llservicos.domain.login.LoginDTO;
+import br.com.llservicos.domain.usuario.dtos.UsuarioDTO;
 import br.com.llservicos.domain.usuario.dtos.UsuarioResponseDTO;
 import br.com.llservicos.services.usuario.UsuarioService;
 import jakarta.inject.Inject;
@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 @Consumes(MediaType.APPLICATION_JSON)
 public class AuthResource {
     @Inject
-    UsuarioService service;
+    UsuarioService usuarioService;
     @Inject
     HashService hashService;
     @Inject
@@ -29,14 +29,14 @@ public class AuthResource {
     private static final Logger LOG = Logger.getLogger(String.valueOf(AuthResource.class));
 
     @POST
-    public Response login(@Valid LoginDTO dto) {
+    public Response login(@Valid UsuarioDTO dto) {
 
         LOG.info("Iniciando a autenticacao endpoint");
 
         String hashSenha = hashService.getHashSenha(dto.senha());
         LOG.info("Hash da senha gerado ");
 
-        UsuarioResponseDTO result = service.findByLoginAndSenha(dto.login(), hashSenha);
+        UsuarioResponseDTO result = usuarioService.login(dto.telefone(), hashSenha);
 
         if (result != null) {
             LOG.info("Login e senha corretos.");

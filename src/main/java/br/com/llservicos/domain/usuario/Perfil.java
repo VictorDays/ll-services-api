@@ -2,6 +2,7 @@ package br.com.llservicos.domain.usuario;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum Perfil {
         USER(1, "Usuário"),
         ADMIN(2, "Admin");

@@ -4,5 +4,5 @@
 -- insert into myentity (id, field) values(2, 'field-2');
 -- insert into myentity (id, field) values(3, 'field-3');
 -- alter sequence myentity_seq restart with 4;
-INSERT INTO UsuarioModel (id, email, senha, perfil)
-VALUES (1, 'oi@gmail.com', '123456', 1);
+INSERT INTO UsuarioModel (id, telefone, senha, perfil)
+VALUES (1, '11999999999', 'e99a18c428cb38d5f260853678922e03', 'USER');
