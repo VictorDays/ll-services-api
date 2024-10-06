@@ -33,7 +33,8 @@ public class EnderecoModel {
         this.pessoa = pessoa;
     }
 
-    @OneToOne(mappedBy = "endereco")
+    @ManyToOne
+    @JoinColumn(name = "pessoa_id") // Ajuste conforme sua chave estrangeira
     private PessoaModel pessoa;
 
     public PessoaModel getPessoa() {

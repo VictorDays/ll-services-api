@@ -28,4 +28,8 @@ public class HashServiceImpl implements HashService {
             throw new RuntimeException("Erro ao criar um hash");
         }
     }
+    public static void main(String[] args) {
+        HashService service = new HashServiceImpl();
+        System.out.println(service.getHashSenha("123"));
+    }
 }

@@ -24,9 +24,8 @@ public class PessoaModel {
     @JoinColumn(name = "usuario_id", referencedColumnName = "id")
     private UsuarioModel usuario;
 
-    @OneToOne
-    @JoinColumn(name = "endereco_id", referencedColumnName = "id")
-    private EnderecoModel endereco;
+    @OneToMany(mappedBy = "pessoa") // Este deve ser o nome da propriedade em EnderecoModel
+    private List<EnderecoModel> enderecoModels;
 
     public void setId(Long id) {
         this.id = id;
@@ -67,10 +66,11 @@ public class PessoaModel {
         this.enderecos = enderecos;
     }
 
-    public EnderecoModel getEndereco() {
-        return endereco;
+    public List<EnderecoModel> getEnderecoModels() {
+        return enderecoModels;
     }
-    public void setEndereco(EnderecoModel endereco) {
-        this.endereco = endereco;
+
+    public void setEnderecoModels(List<EnderecoModel> enderecoModels) {
+        this.enderecoModels = enderecoModels;
     }
 }
