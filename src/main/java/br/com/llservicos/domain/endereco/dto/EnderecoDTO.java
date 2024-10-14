@@ -1,4 +1,4 @@
-package br.com.llservicos.domain.endereco;
+package br.com.llservicos.domain.endereco.dto;
 import jakarta.validation.constraints.NotBlank;
 
 
