@@ -9,4 +9,12 @@ import jakarta.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class PessoaRepository implements PanacheRepository<PessoaModel> {
 
+    public PanacheQuery<PessoaModel> findByUsername(String username) {
+        if (username == null || username.trim().isEmpty()) {
+            return find("1=0");  // Returns an empty query result
+        }
+        String query = "SELECT c FROM Pessoa c JOIN c.pessoa p JOIN p.usuario u WHERE UPPER(u.username) LIKE ?1";
+        return find(query, "%" + username.toUpperCase() + "%");
+    }
+
 }
