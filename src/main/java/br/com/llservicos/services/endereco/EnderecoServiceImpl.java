@@ -2,15 +2,12 @@ package br.com.llservicos.domain.endereco.service;
 import java.util.List;
 
 import br.com.llservicos.domain.endereco.EnderecoModel;
-import br.com.llservicos.domain.endereco.dto.EnderecoDTO;
-import br.com.llservicos.domain.endereco.dto.EnderecoResponseDTO;
+import br.com.llservicos.domain.endereco.dtos.EnderecoDTO;
+import br.com.llservicos.domain.endereco.dtos.EnderecoResponseDTO;
 import br.com.llservicos.domain.pessoa.PessoaModel;
-import br.com.llservicos.domain.usuario.UsuarioModel;
 import br.com.llservicos.repositories.EnderecoRepository;
 import br.com.llservicos.repositories.PessoaRepository;
-import br.com.llservicos.repositories.UsuarioRepository;
 import br.com.llservicos.services.pessoa.PessoaService;
-import br.com.llservicos.services.usuario.UsuarioService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;

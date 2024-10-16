@@ -2,8 +2,8 @@ package br.com.llservicos.domain.endereco.service;
 
 import java.util.List;
 
-import br.com.llservicos.domain.endereco.dto.EnderecoDTO;
-import br.com.llservicos.domain.endereco.dto.EnderecoResponseDTO;
+import br.com.llservicos.domain.endereco.dtos.EnderecoDTO;
+import br.com.llservicos.domain.endereco.dtos.EnderecoResponseDTO;
 import jakarta.validation.Valid;
 
 public interface EnderecoService {
