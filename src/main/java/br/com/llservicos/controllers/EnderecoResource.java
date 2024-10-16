@@ -1,6 +1,6 @@
-package br.com.llservicos.domain.endereco.resource;
+package br.com.llservicos.controllers;
 
-import br.com.llservicos.domain.endereco.service.EnderecoService;
+import br.com.llservicos.services.endereco.EnderecoService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.Path;

@@ -1,4 +1,4 @@
-package br.com.llservicos.domain.endereco.dto;
+package br.com.llservicos.domain.endereco.dtos;
 
 import br.com.llservicos.domain.endereco.EnderecoModel;
 

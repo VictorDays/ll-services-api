@@ -1,4 +1,4 @@
-package br.com.llservicos.domain.endereco.service;
+package br.com.llservicos.services.endereco;
 
 import java.util.List;
 
