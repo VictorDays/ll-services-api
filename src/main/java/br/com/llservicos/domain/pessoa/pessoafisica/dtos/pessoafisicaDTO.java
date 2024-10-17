@@ -1,10 +1,11 @@
-package br.com.llservicos.domain.pessoa.pessoajuridica;
+package br.com.llservicos.domain.pessoa.pessoafisica.dtos;
 
 import jakarta.validation.constraints.NotBlank;
 
-public record pessoajuridicaDTO(
-
+public record pessoafisicaDTO(
+    
     @NotBlank(message = "O nome deve ser informado.") 
     String nome
+
 ) {
 }

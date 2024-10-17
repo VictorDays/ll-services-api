@@ -9,13 +9,14 @@ import jakarta.validation.constraints.Email;
 import java.util.List;
 
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.JOINED)
 public class PessoaModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome ;
+    private String telefone ;
     @Email
     private String email;
     @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -72,5 +73,13 @@ public class PessoaModel {
 
     public void setEnderecoModels(List<EnderecoModel> enderecoModels) {
         this.enderecoModels = enderecoModels;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
 }
