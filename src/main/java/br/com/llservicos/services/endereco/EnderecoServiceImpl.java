@@ -103,7 +103,7 @@ public class EnderecoServiceImpl implements EnderecoService {
     }
 
     @Override
-    public List<EnderecoResponseDTO> findAll() {
+    public List<EnderecoResponseDTO> findByAll() {
         return enderecoRepository.listAll().stream()
        .map(e -> EnderecoResponseDTO.valueOf(e)).toList();
     }

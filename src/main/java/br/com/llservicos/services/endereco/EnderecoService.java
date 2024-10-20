@@ -17,7 +17,7 @@ public interface EnderecoService {
 
     public List<EnderecoResponseDTO> findByCep(String cep);
 
-    public List<EnderecoResponseDTO> findAll();
+    public List<EnderecoResponseDTO> findByAll();
 
     
 } 
