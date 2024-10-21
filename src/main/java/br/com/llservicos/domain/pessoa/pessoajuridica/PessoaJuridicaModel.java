@@ -11,9 +11,7 @@ import lombok.Setter;
 @Entity
 public class PessoaJuridicaModel extends PessoaModel{
 
-   /* @JoinColumn(name = "id_pessoa", referencedColumnName = "id", unique = true)
-    private PessoaModel pessoa; */
-    private String cpf;
+    private String cnpj;
 }
 
 

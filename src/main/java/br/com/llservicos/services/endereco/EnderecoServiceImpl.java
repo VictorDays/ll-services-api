@@ -6,7 +6,7 @@ import br.com.llservicos.domain.endereco.dtos.EnderecoDTO;
 import br.com.llservicos.domain.endereco.dtos.EnderecoResponseDTO;
 import br.com.llservicos.domain.pessoa.PessoaModel;
 import br.com.llservicos.repositories.EnderecoRepository;
-import br.com.llservicos.repositories.PessoaRepository;
+import br.com.llservicos.repositories.PessoaFisicaRepository;
 import br.com.llservicos.services.pessoa.PessoaService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -19,7 +19,7 @@ public class EnderecoServiceImpl implements EnderecoService {
 
 
     @Inject
-    PessoaRepository pessoaRepository;
+    PessoaFisicaRepository pessoaRepository;
 
     @Inject
     EnderecoRepository enderecoRepository;

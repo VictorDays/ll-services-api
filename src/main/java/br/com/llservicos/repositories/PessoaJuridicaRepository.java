@@ -1,15 +1,16 @@
 package br.com.llservicos.repositories;
 
 import br.com.llservicos.domain.pessoa.PessoaModel;
-import br.com.llservicos.domain.usuario.UsuarioModel;
+import br.com.llservicos.domain.pessoa.pessoafisica.PessoaFisicaModel;
+import br.com.llservicos.domain.pessoa.pessoajuridica.PessoaJuridicaModel;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
-public class PessoaRepository implements PanacheRepository<PessoaModel> {
+public class PessoaJuridicaRepository implements PanacheRepository<PessoaJuridicaModel> {
 
-    public PanacheQuery<PessoaModel> findByUsername(String username) {
+    public PanacheQuery<PessoaJuridicaModel> findByUsername(String username) {
         if (username == null || username.trim().isEmpty()) {
             return find("1=0");  // Returns an empty query result
         }
