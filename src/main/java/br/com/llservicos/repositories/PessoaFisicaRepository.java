@@ -17,4 +17,8 @@ public class PessoaFisicaRepository implements PanacheRepository<PessoaFisicaMod
         return find(query, "%" + username.toUpperCase() + "%");
     }
 
+    public PessoaFisicaModel findByCpf(String cpf) {
+        String query = "SELECT c FROM PessoaFisicaModel c WHERE c.cpf = ?1";
+        return find(query, cpf).singleResultOptional().orElse(null);
+    }
 }

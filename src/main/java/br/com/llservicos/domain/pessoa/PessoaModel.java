@@ -19,14 +19,15 @@ public class PessoaModel {
     private String telefone ;
     @Email
     private String email;
+
     @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<EnderecoModel> enderecos;
+
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "usuario_id", referencedColumnName = "id")
     private UsuarioModel usuario;
 
-    @OneToMany(mappedBy = "pessoa") // Este deve ser o nome da propriedade em EnderecoModel
-    private List<EnderecoModel> enderecoModels;
 
     public void setId(Long id) {
         this.id = id;
@@ -67,13 +68,6 @@ public class PessoaModel {
         this.enderecos = enderecos;
     }
 
-    public List<EnderecoModel> getEnderecoModels() {
-        return enderecoModels;
-    }
-
-    public void setEnderecoModels(List<EnderecoModel> enderecoModels) {
-        this.enderecoModels = enderecoModels;
-    }
 
     public String getTelefone() {
         return telefone;

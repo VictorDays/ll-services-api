@@ -7,7 +7,7 @@ import br.com.llservicos.domain.endereco.dtos.EnderecoResponseDTO;
 import jakarta.validation.Valid;
 
 public interface EnderecoService {
-    public EnderecoResponseDTO insert(@Valid EnderecoDTO enderecoDTO, Long idCliente);
+    public EnderecoResponseDTO insert(@Valid EnderecoDTO enderecoDTO);
 
     public EnderecoResponseDTO update(String nome, Long idEndereco, Long idUsuario, @Valid EnderecoDTO enderecoDTO);
 

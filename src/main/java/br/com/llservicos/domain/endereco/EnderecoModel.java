@@ -7,8 +7,8 @@ import br.com.llservicos.domain.pessoa.PessoaModel;
 public class EnderecoModel {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String nome;
     private String logadouro;
     private String complemento;
     private String bairro;
@@ -17,12 +17,15 @@ public class EnderecoModel {
     private String cidade;
     private String estado;
 
+    @ManyToOne
+    @JoinColumn(name = "pessoa_id")
+    private PessoaModel pessoa;
+
     public EnderecoModel() {
     }
 
-    public EnderecoModel(Long id, String nome, String logadouro, String complemento, String bairro, Integer numero, String cep, String cidade, String estado, PessoaModel pessoa) {
-        this.id = id;
-        this.nome = nome;
+    public EnderecoModel(String nome, String logadouro, String complemento, String bairro, Integer numero, String cep, String cidade, String estado, PessoaModel pessoa) {
+
         this.logadouro = logadouro;
         this.complemento = complemento;
         this.bairro = bairro;
@@ -32,10 +35,6 @@ public class EnderecoModel {
         this.estado = estado;
         this.pessoa = pessoa;
     }
-
-    @ManyToOne
-    @JoinColumn(name = "pessoa_id") // Ajuste conforme sua chave estrangeira
-    private PessoaModel pessoa;
 
     public PessoaModel getPessoa() {
         return pessoa;
@@ -51,14 +50,6 @@ public class EnderecoModel {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
     }
 
     public String getLogadouro() {

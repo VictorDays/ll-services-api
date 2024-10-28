@@ -17,5 +17,12 @@ public class PessoaJuridicaRepository implements PanacheRepository<PessoaJuridic
         String query = "SELECT c FROM Pessoa c JOIN c.pessoa p JOIN p.usuario u WHERE UPPER(u.username) LIKE ?1";
         return find(query, "%" + username.toUpperCase() + "%");
     }
+    public PanacheQuery<PessoaJuridicaModel> findByCnpj(String cnpj) {
+        if (cnpj == null || cnpj.trim().isEmpty()) {
+            return find("1=0");
+        }
+        String query = "SELECT c FROM PessoaFisicaModel c WHERE c.cnpj = ?1";
+        return find(query, cnpj);
+    }
 
 }

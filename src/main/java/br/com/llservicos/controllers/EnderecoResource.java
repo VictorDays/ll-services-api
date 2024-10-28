@@ -33,9 +33,8 @@ public class EnderecoResource {
     EnderecoService enderecoService;
 
     @POST
-    @Path("/{idPessoa}")
-    public Response create(@PathParam("idPessoa") Long idPessoa, @Valid EnderecoDTO enderecoDTO) {
-        EnderecoResponseDTO endereco = enderecoService.insert(enderecoDTO, idPessoa);
+    public Response create(@Valid EnderecoDTO enderecoDTO) {
+        EnderecoResponseDTO endereco = enderecoService.insert(enderecoDTO);
         return Response.status(Response.Status.CREATED).entity(endereco).build();
     }
 

@@ -7,7 +7,6 @@ import br.com.llservicos.domain.endereco.dtos.EnderecoResponseDTO;
 import br.com.llservicos.domain.pessoa.PessoaModel;
 import br.com.llservicos.repositories.EnderecoRepository;
 import br.com.llservicos.repositories.PessoaFisicaRepository;
-import br.com.llservicos.services.pessoa.PessoaService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -24,15 +23,14 @@ public class EnderecoServiceImpl implements EnderecoService {
     @Inject
     EnderecoRepository enderecoRepository;
 
-    @Inject
-    PessoaService pessoaService;
+    //@Inject
+    //PessoaService pessoaService;
 
 
 
     @Override
     @Transactional
-    public EnderecoResponseDTO insert(@Valid EnderecoDTO enderecoDTO, Long idPessoa) {
-        PessoaModel pessoa = pessoaRepository.findById(idPessoa);
+    public EnderecoResponseDTO insert(@Valid EnderecoDTO enderecoDTO) {
 
         EnderecoModel endereco = new EnderecoModel();
         endereco.setBairro(enderecoDTO.bairro());
@@ -43,7 +41,7 @@ public class EnderecoServiceImpl implements EnderecoService {
         endereco.setLogadouro(enderecoDTO.logradouro());
 
 
-        pessoa.getEnderecos().add(endereco);
+        enderecoRepository.persist(endereco);
 
         return EnderecoResponseDTO.valueOf(endereco);
     }

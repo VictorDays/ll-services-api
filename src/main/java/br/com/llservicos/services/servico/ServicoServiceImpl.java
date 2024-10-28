@@ -4,6 +4,7 @@ import br.com.llservicos.domain.servico.ServicoModel;
 import br.com.llservicos.repositories.ServicoRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,35 +20,24 @@ public class ServicoServiceImpl implements ServicoService {
     }
 
     @Override
+    @Transactional
     public ServicoModel save(ServicoModel servico) {
-        ServicoModel servicoModel = new ServicoModel();
-        servicoModel.setNome("Nome de teste");
-        servicoModel.setDescricao("Descrição de teste");
-        return servicoModel;
-//        servicoRepository.persist(servico); TODO - Descomentar após a criação do banco de dados
-//        return servico;
+        servicoRepository.persist(servico);
+        return servico;
     }
 
     @Override
     public Optional<ServicoModel> findById(Long id) {
-        ServicoModel servicoModel = new ServicoModel();
-        servicoModel.setNome("Nome de teste");
-        servicoModel.setDescricao("Descrição de teste");
-        return Optional.of(servicoModel);
-//        return servicoRepository.findByIdOptional(id); TODO - Descomentar após a criação do banco de dados
+        return servicoRepository.findByIdOptional(id);
     }
 
     @Override
     public List<ServicoModel> findAll() {
-        ServicoModel servicoModel = new ServicoModel();
-        servicoModel.setNome("Nome de teste");
-        servicoModel.setDescricao("Descrição de teste");
-        List<ServicoModel> servicoModels = List.of(servicoModel);
-        return servicoModels;
-//        return servicoRepository.listAll(); TODO - Descomentar após a criação do banco de dados
+        return servicoRepository.listAll();
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
 //        servicoRepository.deleteById(id); TODO - Descomentar após a criação do banco de dados
     }
