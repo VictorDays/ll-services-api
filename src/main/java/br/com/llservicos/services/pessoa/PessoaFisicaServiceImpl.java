@@ -4,6 +4,8 @@ import br.com.llservicos.domain.endereco.EnderecoModel;
 import br.com.llservicos.domain.pessoa.pessoafisica.PessoaFisicaModel;
 import br.com.llservicos.domain.pessoa.pessoafisica.dtos.PessoaFisicaDTO;
 import br.com.llservicos.domain.pessoa.pessoafisica.dtos.PessoaFisicaResponseDTO;
+import br.com.llservicos.domain.usuario.Perfil;
+import br.com.llservicos.domain.usuario.UsuarioModel;
 import br.com.llservicos.repositories.PessoaFisicaRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -30,11 +32,17 @@ public class PessoaFisicaServiceImpl implements PessoaFisicaService{
             throw new Exception("CPF já cadastrado!" + pessoa.getClass().getName());
         }
 
-        // Crie um novo cliente
+        // Crie um novo
         var person = new PessoaFisicaModel();
         person.setNome(dto.nome());
         person.setEmail(dto.email());
         person.setCpf(dto.cpf());
+
+        var usuario = new UsuarioModel();
+        usuario.setPerfil(Perfil.valueOf(dto.usuario().perfil()));
+        usuario.setTelefone(dto.usuario().telefone());
+        usuario.setSenha(dto.usuario().senha());
+        person.setUsuario(usuario);
 
         // Configure a lista de endereços
         if (dto.enderecos() != null && !dto.enderecos().isEmpty()) {
@@ -49,6 +57,7 @@ public class PessoaFisicaServiceImpl implements PessoaFisicaService{
                         endereco.setCidade(end.cidade());
                         endereco.setEstado(end.estado());
 
+                        endereco.setPessoa(person); // Aqui define a relação
                         return endereco;
                     })
                     .collect(Collectors.toList());

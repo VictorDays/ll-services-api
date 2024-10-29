@@ -7,8 +7,8 @@ import br.com.llservicos.domain.pessoa.PessoaModel;
 public class EnderecoModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //@SequenceGenerator(name = "endereco_seq", sequenceName = "endereco_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "endereco_seq")
+    @SequenceGenerator(name = "endereco_seq", sequenceName = "endereco_sequence", allocationSize = 1)
     private Long id;
     private String logadouro;
     private String complemento;

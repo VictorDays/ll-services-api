@@ -5,6 +5,8 @@ import br.com.llservicos.domain.pessoa.pessoafisica.PessoaFisicaModel;
 import br.com.llservicos.domain.pessoa.pessoajuridica.PessoaJuridicaModel;
 import br.com.llservicos.domain.pessoa.pessoajuridica.dtos.PessoaJuridicaDTO;
 import br.com.llservicos.domain.pessoa.pessoajuridica.dtos.PessoaJuridicaResponseDTO;
+import br.com.llservicos.domain.usuario.Perfil;
+import br.com.llservicos.domain.usuario.UsuarioModel;
 import br.com.llservicos.repositories.PessoaJuridicaRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -25,14 +27,17 @@ public class PessoaJuridicaServiceImpl implements PessoaJuridicaService{
     @Transactional
     public PessoaJuridicaResponseDTO insert(PessoaJuridicaDTO dto) throws Exception{
 
-        //if (juridicaRepository.findByCnpj(dto.cnpj()) != null) {
-          //  throw new Exception("CNPJ já cadastrado!");
-        //}
 
         var person = new PessoaJuridicaModel();
         person.setNome(dto.nome());
         person.setEmail(dto.email());
         person.setCnpj(dto.cnpj());
+
+        var usuario = new UsuarioModel();
+        usuario.setPerfil(Perfil.valueOf(dto.usuario().perfil()));
+        usuario.setTelefone(dto.usuario().telefone());
+        usuario.setSenha(dto.usuario().senha());
+        person.setUsuario(usuario);
 
         // Configure a lista de endereços
         if (dto.cnpj() != null && !dto.enderecos().isEmpty()) {
@@ -46,6 +51,8 @@ public class PessoaJuridicaServiceImpl implements PessoaJuridicaService{
                         endereco.setComplemento(end.complemento());
                         endereco.setCidade(end.cidade());
                         endereco.setEstado(end.estado());
+
+                        endereco.setPessoa(person); // Aqui define a relação
 
                         return endereco;
                     })

@@ -35,7 +35,7 @@ public class PessoaFisicaResource {
             return Response.status(Response.Status.CREATED).entity(service.insert(dto)).build();
         } catch (ConstraintViolationException e) {
             LOG.info("Deu errado incluir Pessoa Fisica ");
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity("Erro ao inserir Pessoa Física: " + e.getMessage()).build();
         }
     }
 

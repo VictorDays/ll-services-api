@@ -18,7 +18,7 @@ public record PessoaFisicaResponseDTO(
         return new PessoaFisicaResponseDTO(
                 pessoaFisica.getNome(),
                 pessoaFisica.getEmail(),
-                pessoaFisica.getTelefone(),
+                pessoaFisica.getUsuario().getTelefone(),
                 pessoaFisica.getCpf(),
                 pessoaFisica.getEnderecos().stream()
                         .map(EnderecoResponseDTO::valueOf)

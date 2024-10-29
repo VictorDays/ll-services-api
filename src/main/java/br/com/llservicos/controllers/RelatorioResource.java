@@ -28,39 +28,38 @@ public class RelatorioResource {
     public Response gerarRelatorioPorPeriodo(@QueryParam("dataInicio") String dataInicioStr,
                                              @QueryParam("dataFim") String dataFimStr,
                                              @Context ServletContext context) {
-        try {
+        //try {
             // Converter Strings para Date
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            Date dataInicio = dateFormat.parse(dataInicioStr);
-            Date dataFim = dateFormat.parse(dataFimStr);
+        //    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            //Date dataInicio = dateFormat.parse(dataInicioStr);
+           // Date dataFim = dateFormat.parse(dataFimStr);
 
-            List<ServicoModel> listaServicos = /* Lógica para buscar os serviços conforme o período */;
+           // List<ServicoModel> listaServicos = /* Lógica para buscar os serviços conforme o período */;
 
-            byte[] pdfBytes = relatoriosUtil.gerarRelatorioPorPeriodo(listaServicos, dataInicio, dataFim, "nome_do_relatorio_por_periodo", context);
-            return Response.ok(pdfBytes)
-                    .header("Content-Disposition", "attachment; filename=\"relatorio_por_periodo.pdf\"")
-                    .build();
-        } catch (Exception e) {
-            e.printStackTrace();
+           // byte[] pdfBytes = relatoriosUtil.gerarRelatorioPorPeriodo(listaServicos, dataInicio, dataFim, "nome_do_relatorio_por_periodo", context);
+          //  return Response.ok(pdfBytes)
+          //          .header("Content-Disposition", "attachment; filename=\"relatorio_por_periodo.pdf\"")
+           //         .build();
+       // } catch (Exception e) {
+       //     e.printStackTrace();
             return Response.serverError().entity("Erro ao gerar o relatório por período").build();
-        }
+        //}
     }
     @POST
     @Path("/por-tipo")
     public Response gerarRelatorioPorTipo(@QueryParam("tipoServico") String tipoServico,
                                           @Context ServletContext context) {
-        try {
-            List<ServicoModel> listaServicos = /* Lógica para buscar os serviços conforme o tipo de serviço */;
+      //  try {
+           // List<ServicoModel> listaServicos = /* Lógica para buscar os serviços conforme o tipo de serviço */;
 
-            byte[] pdfBytes = relatoriosUtil.gerarRelatorioPorTipo(listaServicos, tipoServico, "nome_do_relatorio_por_tipo", context);
-            return Response.ok(pdfBytes)
-                    .header("Content-Disposition", "attachment; filename=\"relatorio_por_tipo.pdf\"")
-                    .build();
-        } catch (Exception e) {
-            e.printStackTrace();
+            //byte[] pdfBytes = relatoriosUtil.gerarRelatorioPorTipo(listaServicos, tipoServico, "nome_do_relatorio_por_tipo", context);
+          //  return Response.ok(pdfBytes)
+           //         .header("Content-Disposition", "attachment; filename=\"relatorio_por_tipo.pdf\"")
+           //         .build();
+      //  } catch (Exception e) {
+        //    e.printStackTrace();
             return Response.serverError().entity("Erro ao gerar o relatório por tipo").build();
-        }
+       // }
     }
 
-}
 }

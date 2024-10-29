@@ -8,7 +8,7 @@ public class UsuarioModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Email
+
     private String telefone;
     private String senha;
     @Enumerated(EnumType.STRING)
