@@ -13,3 +13,7 @@ INSERT INTO pessoafisicamodel (id, cpf) VALUES (1, '123.456.789-00');
 
 -- Tabela para PessoaJuridicaModel
 INSERT INTO pessoajuridicamodel (id, cnpj) VALUES (2, '12.345.678/0001-95');
+
+-- Tabela para a classe endereço
+INSERT INTO endereco (id, logadouro, complemento, bairro, numero, cep, cidade, estado, pessoa_id) 
+VALUES (1, 'Av tocantins', 'apt 202', 'palmas brasil', 1000, '77020-122', 'Palmas', 'TOs', 2);

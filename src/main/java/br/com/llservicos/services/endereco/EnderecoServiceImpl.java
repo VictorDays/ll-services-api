@@ -52,46 +52,47 @@ public class EnderecoServiceImpl implements EnderecoService {
         EnderecoModel endereco = enderecoRepository.findById(idEndereco);
         if(endereco == null){
             throw new NotFoundException("Endereço não encontrado.");
-        }else{
-            PessoaModel pessoa = pessoaRepository.findById(idPessoa);
-            EnderecoModel enderecoAtualizado = new EnderecoModel();
-
-            for(EnderecoModel end : pessoa.getEnderecos()){
-                if(end.getId().equals(idEndereco)){
-                    end.setBairro(enderecoDTO.bairro());
-                    end.setCep(enderecoDTO.cep());
-                    end.setCidade(enderecoDTO.cidade());
-                    end.setComplemento(enderecoDTO.complemento());
-                    end.setEstado(enderecoDTO.estado());
-                    end.setLogadouro(enderecoDTO.logradouro());
-                    enderecoAtualizado = end;
-                    enderecoRepository.persist(end);
-                }
-            }
         }
+        PessoaModel pessoa = pessoaRepository.findById(idPessoa);
+
+        if(pessoa == null){
+            throw new NotFoundException("Pessoa não encontrada.");
+        }
+
+        endereco.setBairro(enderecoDTO.bairro());
+        endereco.setCep(enderecoDTO.cep());
+        endereco.setCidade(enderecoDTO.cidade());
+        endereco.setComplemento(enderecoDTO.complemento());
+        endereco.setEstado(enderecoDTO.estado());
+        endereco.setLogadouro(enderecoDTO.logradouro());
+
+        enderecoRepository.persist(endereco);
+
+
         return EnderecoResponseDTO.valueOf(endereco);
     }
 
     @Override
     public void delete(String nome, Long idEndereco) {
-        PessoaModel pessoa = pessoaRepository.findById(idEndereco);
-        EnderecoModel endereco = new EnderecoModel();
-
-        for (EnderecoModel end : pessoa.getEnderecos()) {
-            if (end.getId().equals(idEndereco)) {
-                endereco = end;
-            }
-        }
-
-        pessoa.getEnderecos().remove(endereco);
-        if(!enderecoRepository.deleteById(idEndereco)){
+        EnderecoModel endereco = enderecoRepository.findById(idEndereco);
+        if (endereco == null) {
             throw new NotFoundException("Endereço não encontrado.");
         }
+
+        PessoaModel pessoa = pessoaRepository.findById(endereco.getPessoa().getId());
+        if (pessoa == null) {
+            pessoa.getEnderecos().remove(endereco);
+        }
+        enderecoRepository.delete(endereco);
     }
 
     @Override
     public EnderecoResponseDTO findById(Long idEndereco) {
-        return EnderecoResponseDTO.valueOf(enderecoRepository.findById(idEndereco));
+        EnderecoModel endereco = enderecoRepository.findById(idEndereco);
+        if (endereco == null) {
+            throw new NotFoundException("Endereço não encontrado");
+        }
+        return EnderecoResponseDTO.valueOf(endereco);
     }
 
     @Override
