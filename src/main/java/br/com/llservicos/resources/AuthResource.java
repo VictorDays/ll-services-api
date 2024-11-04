@@ -1,4 +1,4 @@
-package br.com.llservicos.controllers;
+package br.com.llservicos.resources;
 
 import br.com.llservicos.config.GenerationToken.Hash.HashService;
 import br.com.llservicos.config.GenerationToken.Jwt.JwtService;

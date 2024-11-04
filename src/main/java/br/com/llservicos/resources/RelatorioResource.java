@@ -1,4 +1,4 @@
-package br.com.llservicos.controllers;
+package br.com.llservicos.resources;
 
 
 import br.com.llservicos.utils.RelatoriosUtil;
@@ -11,11 +11,6 @@ import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import br.com.llservicos.domain.servico.ServicoModel;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
 
 @Path("/relatorio")
 @Produces(value = MediaType.APPLICATION_OCTET_STREAM)

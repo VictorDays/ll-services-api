@@ -1,20 +1,14 @@
-package br.com.llservicos.controllers;
-
-import org.eclipse.microprofile.jwt.JsonWebToken;
+package br.com.llservicos.resources;
 
 import br.com.llservicos.domain.endereco.dtos.EnderecoDTO;
 import br.com.llservicos.domain.endereco.dtos.EnderecoResponseDTO;
 import br.com.llservicos.services.endereco.EnderecoService;
 import io.quarkus.logging.Log;
-import io.quarkus.vertx.http.runtime.devmode.Json;
-import io.vertx.core.logging.Logger;
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
-import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
@@ -22,7 +16,6 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.core.Response.Status;
 
 @Path("enderecos")
 @Produces(MediaType.APPLICATION_JSON)

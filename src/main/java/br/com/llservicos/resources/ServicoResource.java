@@ -1,4 +1,4 @@
-package br.com.llservicos.controllers;
+package br.com.llservicos.resources;
 
 import br.com.llservicos.domain.servico.ServicoModel;
 import br.com.llservicos.services.servico.ServicoService;

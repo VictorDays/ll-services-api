@@ -1,19 +1,14 @@
-package br.com.llservicos.controllers;
+package br.com.llservicos.resources;
 
 
 import br.com.llservicos.domain.pessoa.pessoafisica.dtos.PessoaFisicaDTO;
-import br.com.llservicos.domain.pessoa.pessoafisica.dtos.PessoaFisicaResponseDTO;
-import br.com.llservicos.domain.pessoa.pessoajuridica.dtos.PessoaJuridicaResponseDTO;
 import br.com.llservicos.services.pessoa.PessoaFisicaService;
-import io.quarkus.test.common.IntegrationTestStartedNotifier;
 import jakarta.inject.Inject;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import org.jboss.jandex.Result;
 
 import java.util.logging.Logger;
 

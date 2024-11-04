@@ -1,4 +1,4 @@
-package br.com.llservicos.controllers;
+package br.com.llservicos.resources;
 
 import java.util.List;
 import java.util.Optional;

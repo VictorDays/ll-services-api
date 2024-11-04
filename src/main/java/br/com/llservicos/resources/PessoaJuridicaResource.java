@@ -1,11 +1,9 @@
-package br.com.llservicos.controllers;
+package br.com.llservicos.resources;
 
 
 import br.com.llservicos.domain.pessoa.pessoajuridica.dtos.PessoaJuridicaDTO;
-import br.com.llservicos.domain.pessoa.pessoajuridica.dtos.PessoaJuridicaResponseDTO;
 import br.com.llservicos.services.pessoa.PessoaJuridicaService;
 import jakarta.inject.Inject;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.*;
