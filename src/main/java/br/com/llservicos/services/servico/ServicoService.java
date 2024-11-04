@@ -1,9 +1,9 @@
 package br.com.llservicos.services.servico;
 
-import br.com.llservicos.domain.servico.ServicoModel;
-
 import java.util.List;
 import java.util.Optional;
+
+import br.com.llservicos.domain.servico.ServicoModel;
 
 public interface ServicoService {
 

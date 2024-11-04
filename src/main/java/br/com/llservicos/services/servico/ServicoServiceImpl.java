@@ -1,13 +1,13 @@
 package br.com.llservicos.services.servico;
 
+import java.util.List;
+import java.util.Optional;
+
 import br.com.llservicos.domain.servico.ServicoModel;
 import br.com.llservicos.repositories.ServicoRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-
-import java.util.List;
-import java.util.Optional;
 
 @ApplicationScoped
 public class ServicoServiceImpl implements ServicoService {
@@ -22,9 +22,22 @@ public class ServicoServiceImpl implements ServicoService {
     @Override
     @Transactional
     public ServicoModel save(ServicoModel servico) {
-        servicoRepository.persist(servico);
-        return servico;
+    if (servicoRepository.find("nome", servico.getNome()).firstResult() != null) {
+        throw new IllegalArgumentException("Ja existe um servico cadastrado com o nome: " + servico.getNome());
     }
+
+    if (servico.getId() != null) {
+        Optional<ServicoModel> existingServico = servicoRepository.findByIdOptional(servico.getId());
+        if (existingServico.isPresent()) {
+            ServicoModel toUpdate = existingServico.get();
+            toUpdate.setNome(servico.getNome());
+            toUpdate.setDescricao(servico.getDescricao());
+            return toUpdate; 
+        }
+    }
+    servicoRepository.persist(servico);
+    return servico;
+   }
 
     @Override
     public Optional<ServicoModel> findById(Long id) {
@@ -39,6 +52,6 @@ public class ServicoServiceImpl implements ServicoService {
     @Override
     @Transactional
     public void deleteById(Long id) {
-//        servicoRepository.deleteById(id); TODO - Descomentar após a criação do banco de dados
+        servicoRepository.deleteById(id); 
     }
 }
