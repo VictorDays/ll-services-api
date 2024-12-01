@@ -24,8 +24,7 @@ public class PedidoServiceImpl implements PedidoService{
     @Override
     @Transactional
     public PedidoModel createPedido(PedidoDTO pedidoDTO) {
-        PedidoModel pedido = new PedidoModel(0, null, null, null, null, null);
-        pedido.setPessoa(pedidoDTO.pessoa());
+        PedidoModel pedido = new PedidoModel(0, null, null, null);
         pedido.setStatus(pedidoDTO.status());
         pedido.setValorTotal(pedidoDTO.valorTotal());
 
@@ -40,9 +39,7 @@ public class PedidoServiceImpl implements PedidoService{
         if (pedido == null) {
             throw new RuntimeException("Pedido não encontrado");
         }
-
         
-        pedido.setPessoa(pedidoDTO.pessoa());
         pedido.setStatus(pedidoDTO.status());
         pedido.setValorTotal(pedidoDTO.valorTotal());
 

@@ -43,3 +43,7 @@ nb-configuration.xml
 /.quarkus/cli/plugins/
 # TLS Certificates
 .certs/
+
+# Ignorar arquivos específicos que não devem ser comitados
+pom.xml
+src/main/resources/application.properties
