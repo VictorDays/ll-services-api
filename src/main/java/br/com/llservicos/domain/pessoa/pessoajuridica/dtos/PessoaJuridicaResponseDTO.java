@@ -20,7 +20,7 @@ public record PessoaJuridicaResponseDTO(
         return new PessoaJuridicaResponseDTO(
                 juridicaModel.getNome(),
                 juridicaModel.getEmail(),
-                juridicaModel.getUsuario().getTelefone(),
+                juridicaModel.getTelefone(),
                 juridicaModel.getCnpj(),
                 juridicaModel.getEnderecos().stream()
                         .map(EnderecoResponseDTO::valueOf)

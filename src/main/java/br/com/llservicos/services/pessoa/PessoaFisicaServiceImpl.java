@@ -26,7 +26,7 @@ public class PessoaFisicaServiceImpl implements PessoaFisicaService{
     @Transactional
     public PessoaFisicaResponseDTO insert(PessoaFisicaDTO dto) throws Exception {
         // Verifique se o cpf já existe
-        var pessoa = fisicaRepository.findByCpf(dto.cpf());
+        var pessoa = fisicaRepository.findByCpf(dto.getCpf());
 
         if (pessoa != null) {
             throw new Exception("CPF já cadastrado!" + pessoa.getClass().getName());
@@ -34,19 +34,15 @@ public class PessoaFisicaServiceImpl implements PessoaFisicaService{
 
         // Crie um novo
         var person = new PessoaFisicaModel();
-        person.setNome(dto.nome());
-        person.setEmail(dto.email());
-        person.setCpf(dto.cpf());
+        person.setNome(dto.getNome());
+        person.setEmail(dto.getEmail());
+        person.setCpf(dto.getCpf());
+        person.setTelefone(dto.getTelefone());
 
-        var usuario = new UsuarioModel();
-        usuario.setPerfil(Perfil.valueOf(dto.usuario().perfil()));
-        usuario.setTelefone(dto.usuario().telefone());
-        usuario.setSenha(dto.usuario().senha());
-        person.setUsuario(usuario);
 
         // Configure a lista de endereços
-        if (dto.enderecos() != null && !dto.enderecos().isEmpty()) {
-            List<EnderecoModel> enderecos = dto.enderecos().stream()
+        if (dto.getEnderecos() != null && !dto.getEnderecos().isEmpty()) {
+            List<EnderecoModel> enderecos = dto.getEnderecos().stream()
                     .map(end -> {
                         var endereco = new EnderecoModel();
                         endereco.setCep(end.cep());

@@ -1,13 +1,18 @@
 package br.com.llservicos.repositories;
 
 import br.com.llservicos.domain.pessoa.PessoaModel;
+import br.com.llservicos.domain.pessoa.dtos.PessoaDTO;
 import br.com.llservicos.domain.pessoa.pessoafisica.PessoaFisicaModel;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.persistence.NoResultException;
+
+import java.util.Optional;
 
 @ApplicationScoped
 public class PessoaFisicaRepository implements PanacheRepository<PessoaFisicaModel> {
+
 
     public PanacheQuery<PessoaFisicaModel> findByUsername(String username) {
         if (username == null || username.trim().isEmpty()) {

@@ -18,6 +18,7 @@ public class PessoaModel {
     private String nome ;
     private String telefone ;
     @Email
+    @Column(name = "email")
     private String email;
 
     @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, orphanRemoval = true)

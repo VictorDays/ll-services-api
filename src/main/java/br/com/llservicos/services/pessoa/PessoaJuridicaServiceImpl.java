@@ -29,19 +29,14 @@ public class PessoaJuridicaServiceImpl implements PessoaJuridicaService{
 
 
         var person = new PessoaJuridicaModel();
-        person.setNome(dto.nome());
-        person.setEmail(dto.email());
-        person.setCnpj(dto.cnpj());
-
-        var usuario = new UsuarioModel();
-        usuario.setPerfil(Perfil.valueOf(dto.usuario().perfil()));
-        usuario.setTelefone(dto.usuario().telefone());
-        usuario.setSenha(dto.usuario().senha());
-        person.setUsuario(usuario);
+        person.setNome(dto.getNome());
+        person.setEmail(dto.getEmail());
+        person.setCnpj(dto.getCnpj());
+        person.setTelefone(dto.getTelefone());
 
         // Configure a lista de endereços
-        if (dto.cnpj() != null && !dto.enderecos().isEmpty()) {
-            List<EnderecoModel> enderecos = dto.enderecos().stream()
+        if (dto.getCnpj() != null && !dto.getEnderecos().isEmpty()) {
+            List<EnderecoModel> enderecos = dto.getEnderecos().stream()
                     .map(end -> {
                         var endereco = new EnderecoModel();
                         endereco.setCep(end.cep());

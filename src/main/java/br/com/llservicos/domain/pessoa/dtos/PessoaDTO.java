@@ -9,8 +9,7 @@ public record PessoaDTO(
         @NotBlank(message = "O campo nome não pode ser nulo.") String nome,
         String cnpj,
         String cpf,
-        @Email(message = "O e-mail deve ser válido.") String email,
-        @NotBlank(message = "O campo Usuário não pode ser nulo.") UsuarioDTO usuario,
+        String email,
         EnderecoDTO endereco
 
         ) {
