@@ -22,22 +22,29 @@ public class ServicoServiceImpl implements ServicoService {
     @Override
     @Transactional
     public ServicoModel save(ServicoModel servico) {
-    if (servicoRepository.find("nome", servico.getNome()).firstResult() != null) {
-        throw new IllegalArgumentException("Ja existe um servico cadastrado com o nome: " + servico.getNome());
-    }
+        // Verifica se já existe um serviço com o mesmo nome
+        if (servicoRepository.find("nome", servico.getNome()).firstResult() != null) {
+            throw new IllegalArgumentException("Já existe um serviço cadastrado com o nome: " + servico.getNome());
+        }
 
-    if (servico.getId() != null) {
-        Optional<ServicoModel> existingServico = servicoRepository.findByIdOptional(servico.getId());
-        if (existingServico.isPresent()) {
-            ServicoModel toUpdate = existingServico.get();
-            toUpdate.setNome(servico.getNome());
-            toUpdate.setDescricao(servico.getDescricao());
-            return toUpdate; 
+        // Caso contrário, persistimos a nova entidade ou atualizamos
+        if (servico.getId() != null && servico.getId() > 0) {
+            // Atualização de entidade existente
+            Optional<ServicoModel> existingServico = servicoRepository.findByIdOptional(servico.getId());
+            if (existingServico.isPresent()) {
+                ServicoModel toUpdate = existingServico.get();
+                toUpdate.setNome(servico.getNome());
+                toUpdate.setDescricao(servico.getDescricao());
+                return servicoRepository.getEntityManager().merge(toUpdate); // Use merge
+            } else {
+                throw new IllegalArgumentException("Nenhum serviço encontrado com o ID: " + servico.getId());
+            }
+        } else {
+            // Persistir nova entidade
+            servicoRepository.persist(servico);
+            return servico;
         }
     }
-    servicoRepository.persist(servico);
-    return servico;
-   }
 
     @Override
     public Optional<ServicoModel> findById(Long id) {
@@ -52,6 +59,6 @@ public class ServicoServiceImpl implements ServicoService {
     @Override
     @Transactional
     public void deleteById(Long id) {
-        servicoRepository.deleteById(id); 
+        servicoRepository.deleteById(id);
     }
 }

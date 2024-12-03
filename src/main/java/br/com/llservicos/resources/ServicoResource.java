@@ -1,6 +1,7 @@
 package br.com.llservicos.resources;
 
 import br.com.llservicos.domain.servico.ServicoModel;
+import br.com.llservicos.domain.servico.dto.ServicoDTO;
 import br.com.llservicos.services.servico.ServicoService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -23,8 +24,16 @@ public class ServicoResource {
     }
 
     @POST
-    public Response createServico(ServicoModel servico) {
+    public Response createServico(ServicoDTO servicoDTO) {
+        // Convertendo o DTO para o modelo
+        ServicoModel servico = new ServicoModel();
+        servico.setNome(servicoDTO.nome());
+        servico.setDescricao(servicoDTO.descricao());
+        
+        // Chama o serviço para salvar o serviço no banco de dados
         ServicoModel createdServico = servicoService.save(servico);
+
+        // Retorna a resposta com o status 201 e o serviço criado
         return Response.status(Response.Status.CREATED).entity(createdServico).build();
     }
 

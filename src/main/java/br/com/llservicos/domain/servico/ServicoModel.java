@@ -4,21 +4,48 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
 @Entity
 public class ServicoModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "servico_seq")
-    @SequenceGenerator(name = "servico_seq", sequenceName = "servico_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String nome;
-
     private String descricao;
+
+    // Construtor sem parâmetros (necessário para o Hibernate)
+    public ServicoModel() {
+    }
+
+    public ServicoModel(Long id, String nome, String descricao) {
+        this.id = id;
+        this.nome = nome;
+        this.descricao = descricao;
+    }
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNome() {
+        return this.nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getDescricao() {
+        return this.descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+    
 }
