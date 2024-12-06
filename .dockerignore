@@ -1,5 +1,2 @@
-*
-!target/*-runner
-!target/*-runner.jar
-!target/lib/*
-!target/quarkus-app/*
+target/*
+!target/llservicos-1.0-SNAPSHOT.jar
