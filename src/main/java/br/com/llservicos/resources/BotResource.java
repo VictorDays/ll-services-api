@@ -1,4 +1,4 @@
-package br.com.llservicos.resources;
+/*package br.com.llservicos.resources;
 
 import br.com.llservicos.services.bot.TwilioService;
 import jakarta.inject.Inject;
@@ -64,4 +64,4 @@ public class BotResource {
             this.messageBody = messageBody;
         }
     }
-}
+}*/

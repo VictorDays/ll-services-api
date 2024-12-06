@@ -1,4 +1,4 @@
-package br.com.llservicos.services.bot;
+/*package br.com.llservicos.services.bot;
 
 import br.com.llservicos.domain.endereco.dtos.EnderecoDTO;
 import br.com.llservicos.domain.pessoa.dtos.PessoaResponseDTO;
@@ -395,4 +395,4 @@ public class TwilioService {
         }
     }
 
-}
+}*/
