@@ -1,10 +1,14 @@
 package br.com.llservicos.domain.pedido;
 
 import java.util.Date;
+
+import br.com.llservicos.domain.servico.ServicoModel;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
@@ -16,6 +20,10 @@ public class PedidoModel {
     private Status status;
     private Date dataservico;
     private Double valorTotal;
+
+    @ManyToOne // Relacionamento muitos-para-um com ServiçoModel
+    @JoinColumn(name = "servico_id", nullable = false) // Chave estrangeira
+    private ServicoModel servico;
 
     // Construtor sem parâmetros (necessário para o Hibernate)
     public PedidoModel() {
@@ -67,6 +75,14 @@ public class PedidoModel {
 
     public void setValorTotal(Double valorTotal) {
         this.valorTotal = valorTotal;
+    }
+
+    public ServicoModel getServico() {
+        return servico;
+    }
+
+    public void setServico(ServicoModel servico) {
+        this.servico = servico;
     }
 
 }

@@ -5,28 +5,31 @@ import java.util.Optional;
 
 import br.com.llservicos.domain.pedido.PedidoModel;
 import br.com.llservicos.domain.pedido.dtos.PedidoDTO;
-
+import br.com.llservicos.domain.servico.ServicoModel;
 import br.com.llservicos.repositories.PedidoRepository;
-
+import br.com.llservicos.repositories.ServicoRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
-
 @ApplicationScoped
-public class PedidoServiceImpl implements PedidoService{
-   
+public class PedidoServiceImpl implements PedidoService {
+
     @Inject
     PedidoRepository pedidoRepository;
 
-    
+    @Inject
+    ServicoRepository servicoRepository; // Repositório para buscar o serviço
 
     @Override
     @Transactional
     public PedidoModel createPedido(PedidoDTO pedidoDTO) {
-        PedidoModel pedido = new PedidoModel(0, null, null, null);
+        ServicoModel servico = servicoRepository.findById(pedidoDTO.servicoId());
+
+        PedidoModel pedido = new PedidoModel();
         pedido.setStatus(pedidoDTO.status());
         pedido.setValorTotal(pedidoDTO.valorTotal());
+        pedido.setServico(servico);
 
         pedidoRepository.persist(pedido);
         return pedido;
@@ -39,7 +42,7 @@ public class PedidoServiceImpl implements PedidoService{
         if (pedido == null) {
             throw new RuntimeException("Pedido não encontrado");
         }
-        
+
         pedido.setStatus(pedidoDTO.status());
         pedido.setValorTotal(pedidoDTO.valorTotal());
 
@@ -85,9 +88,8 @@ public class PedidoServiceImpl implements PedidoService{
     public List<PedidoModel> getPedidosByValorTotal(Double valorTotal) {
         return pedidoRepository.find("valorTotal", valorTotal).list();
     }
-    
 
-     @Override
+    @Override
     @Transactional
     public PedidoModel save(PedidoModel pedido) {
         pedidoRepository.persist(pedido);
@@ -107,6 +109,6 @@ public class PedidoServiceImpl implements PedidoService{
     @Override
     @Transactional
     public void deleteById(Long id) {
-    pedidoRepository.deleteById(id); 
+        pedidoRepository.deleteById(id);
     }
 }
