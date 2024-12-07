@@ -7,10 +7,10 @@ WORKDIR /workspace
 # Copia o código-fonte para o container
 COPY . .
 
-# Executa o build do projeto com configuração do tipo "uber-jar"
-RUN mvn clean package -DskipTests -Pnative
+# Executa o build do projeto sem a criação da imagem nativa
+RUN mvn clean package -DskipTests
 
-# Etapa final (imagem com OpenJDK)
+# Etapa final
 FROM openjdk:21-jdk-slim
 
 # Expõe a porta onde o serviço estará rodando
