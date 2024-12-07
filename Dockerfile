@@ -17,7 +17,7 @@ FROM openjdk:21-jdk-slim
 EXPOSE 8080
 
 # Copia o JAR gerado na etapa anterior
-COPY --from=build /workspace/target\llservicos-1.0-SNAPSHOT-runner.jar /app.jar
+COPY --from=build /workspace/target/llservicos-1.0-SNAPSHOT-runner.jar /app.jar
 
 
 # Comando para rodar o aplicativo
