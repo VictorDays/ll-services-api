@@ -1,7 +1,6 @@
 package br.com.llservicos.domain.usuario;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 
 @Entity
 public class UsuarioModel {

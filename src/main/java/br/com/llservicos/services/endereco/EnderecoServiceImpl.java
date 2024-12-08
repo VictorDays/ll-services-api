@@ -1,10 +1,12 @@
 package br.com.llservicos.services.endereco;
 import java.util.List;
+import java.util.Optional;
 
 import br.com.llservicos.domain.endereco.EnderecoModel;
 import br.com.llservicos.domain.endereco.dtos.EnderecoDTO;
 import br.com.llservicos.domain.endereco.dtos.EnderecoResponseDTO;
 import br.com.llservicos.domain.pessoa.PessoaModel;
+import br.com.llservicos.domain.pessoa.pessoafisica.PessoaFisicaModel;
 import br.com.llservicos.repositories.EnderecoRepository;
 import br.com.llservicos.repositories.PessoaFisicaRepository;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -70,6 +72,27 @@ public class EnderecoServiceImpl implements EnderecoService {
 
 
         return EnderecoResponseDTO.valueOf(endereco);
+    }
+
+    @Override
+    @Transactional
+    public EnderecoResponseDTO adicionaEndBot(Long idPessoa, @Valid EnderecoDTO enderecoDTO) {
+        PessoaModel pessoa = pessoaRepository.findById(idPessoa);
+
+        // Cria um novo endereço
+        EnderecoModel novoEndereco = new EnderecoModel();
+        novoEndereco.setCep(enderecoDTO.cep());
+        novoEndereco.setBairro(enderecoDTO.bairro());
+        novoEndereco.setNumero(enderecoDTO.numero());
+        novoEndereco.setLogadouro(enderecoDTO.logradouro());
+        novoEndereco.setComplemento(enderecoDTO.complemento());
+
+        novoEndereco.setCidade(enderecoDTO.cidade());
+
+        novoEndereco.setPessoa(pessoa); // Vincula a Pessoa
+        pessoa.getEnderecos().add(novoEndereco);
+
+        return EnderecoResponseDTO.valueOf(novoEndereco);
     }
 
     @Override

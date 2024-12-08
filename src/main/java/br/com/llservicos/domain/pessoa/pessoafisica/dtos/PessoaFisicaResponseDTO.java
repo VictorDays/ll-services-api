@@ -2,12 +2,12 @@ package br.com.llservicos.domain.pessoa.pessoafisica.dtos;
 
 import br.com.llservicos.domain.endereco.dtos.EnderecoResponseDTO;
 import br.com.llservicos.domain.pessoa.pessoafisica.PessoaFisicaModel;
-import jakarta.validation.constraints.NotBlank;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public record PessoaFisicaResponseDTO(
+    Long id,
     String nome,
     String email,
     String telefone,
@@ -16,9 +16,10 @@ public record PessoaFisicaResponseDTO(
 ) {
     public static PessoaFisicaResponseDTO valueOf (PessoaFisicaModel pessoaFisica) {
         return new PessoaFisicaResponseDTO(
+                pessoaFisica.getId(),
                 pessoaFisica.getNome(),
                 pessoaFisica.getEmail(),
-                pessoaFisica.getUsuario().getTelefone(),
+                pessoaFisica.getTelefone(),
                 pessoaFisica.getCpf(),
                 pessoaFisica.getEnderecos().stream()
                         .map(EnderecoResponseDTO::valueOf)

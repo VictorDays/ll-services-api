@@ -21,7 +21,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         if (usuarioOptional.isPresent()) {
             UsuarioModel usuario = usuarioOptional.get();
             // Converter UsuarioModel para UsuarioResponseDTO
-            return new UsuarioResponseDTO(usuario.getId(), usuario.getTelefone(), usuario.getPerfil());
+            return new UsuarioResponseDTO(usuario.getId(), usuario.getTelefone(), usuario.getPerfil().getLabel());
         }
 
         return null; // Login falhou

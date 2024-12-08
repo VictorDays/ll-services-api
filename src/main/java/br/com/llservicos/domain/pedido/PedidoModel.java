@@ -2,6 +2,7 @@ package br.com.llservicos.domain.pedido;
 
 import java.util.Date;
 
+import br.com.llservicos.domain.pessoa.PessoaModel;
 import br.com.llservicos.domain.servico.ServicoModel;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
@@ -20,6 +22,9 @@ public class PedidoModel {
     private Status status;
     private Date dataservico;
     private Double valorTotal;
+
+    @OneToOne
+    private PessoaModel pessoa;
 
     @ManyToOne // Relacionamento muitos-para-um com ServiçoModel
     @JoinColumn(name = "servico_id", nullable = false) // Chave estrangeira
@@ -83,6 +88,18 @@ public class PedidoModel {
 
     public void setServico(ServicoModel servico) {
         this.servico = servico;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public PessoaModel getPessoa() {
+        return pessoa;
+    }
+
+    public void setPessoa(PessoaModel pessoa) {
+        this.pessoa = pessoa;
     }
 
 }

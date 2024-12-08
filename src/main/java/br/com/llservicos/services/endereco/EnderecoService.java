@@ -19,5 +19,7 @@ public interface EnderecoService {
 
     public List<EnderecoResponseDTO> findByAll();
 
+    public EnderecoResponseDTO adicionaEndBot(Long idUsuario, @Valid EnderecoDTO enderecoDTO);
+
     
 } 

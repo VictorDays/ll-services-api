@@ -2,7 +2,6 @@ package br.com.llservicos.domain.pessoa.pessoafisica;
 
 import br.com.llservicos.domain.pessoa.PessoaModel;
 import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
 import lombok.Getter;
 import lombok.Setter;
 

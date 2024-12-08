@@ -1,6 +1,5 @@
 package br.com.llservicos.repositories;
 
-import br.com.llservicos.domain.pessoa.PessoaModel;
 import br.com.llservicos.domain.pessoa.pessoafisica.PessoaFisicaModel;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;

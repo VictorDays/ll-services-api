@@ -9,6 +9,7 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response.Status;
 
 import java.util.logging.Logger;
 
@@ -55,5 +56,15 @@ public class PessoaFisicaResource {
         return Response.ok(service.findByAll()).build();
     }
 
-
+    @PUT
+    @Transactional
+    @Path("/{id}")
+    public Response updResponse(@PathParam("id") Long id, PessoaFisicaDTO dto){
+        try {
+            service.update(dto, id);
+            return Response.noContent().build();
+        } catch (Exception e) {
+            return Response.status(Status.NOT_FOUND).build();
+        }
+    }
 }

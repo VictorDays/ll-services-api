@@ -18,7 +18,7 @@ public record PessoaResponseDTO(
                 pessoa.getId(),
                 pessoa.getNome(),
                 pessoa.getEmail(),
-                pessoa.getUsuario().getTelefone(),
+                pessoa.getTelefone(),
                 UsuarioResponseDTO.valueOf(pessoa.getUsuario())
         );
     }

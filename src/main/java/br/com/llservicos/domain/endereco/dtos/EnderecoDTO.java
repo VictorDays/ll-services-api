@@ -1,6 +1,4 @@
 package br.com.llservicos.domain.endereco.dtos;
-import jakarta.validation.constraints.NotBlank;
-
 
 public record EnderecoDTO(
         String logradouro,

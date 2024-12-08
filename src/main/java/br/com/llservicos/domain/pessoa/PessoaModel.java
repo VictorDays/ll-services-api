@@ -2,10 +2,10 @@ package br.com.llservicos.domain.pessoa;
 
 import br.com.llservicos.domain.endereco.EnderecoModel;
 import br.com.llservicos.domain.usuario.UsuarioModel;
-import br.com.llservicos.domain.endereco.EnderecoModel;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,7 +21,7 @@ public class PessoaModel {
     private String email;
 
     @OneToMany(mappedBy = "pessoa", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<EnderecoModel> enderecos;
+    private List<EnderecoModel> enderecos = new ArrayList<>();
 
 
     @OneToOne(cascade = CascadeType.ALL)

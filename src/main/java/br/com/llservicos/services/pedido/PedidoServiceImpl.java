@@ -5,8 +5,11 @@ import java.util.Optional;
 
 import br.com.llservicos.domain.pedido.PedidoModel;
 import br.com.llservicos.domain.pedido.dtos.PedidoDTO;
+import br.com.llservicos.domain.pessoa.PessoaModel;
 import br.com.llservicos.domain.servico.ServicoModel;
 import br.com.llservicos.repositories.PedidoRepository;
+import br.com.llservicos.repositories.PessoaFisicaRepository;
+import br.com.llservicos.repositories.PessoaRepository;
 import br.com.llservicos.repositories.ServicoRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -21,15 +24,23 @@ public class PedidoServiceImpl implements PedidoService {
     @Inject
     ServicoRepository servicoRepository; // Repositório para buscar o serviço
 
+    @Inject
+    PessoaRepository pessoaRepository;
+
+    @Inject
+    PessoaFisicaRepository pessoaFisicaRepository;
+
     @Override
     @Transactional
     public PedidoModel createPedido(PedidoDTO pedidoDTO) {
         ServicoModel servico = servicoRepository.findById(pedidoDTO.servicoId());
+        PessoaModel pessoa = pessoaRepository.findById(pedidoDTO.pessoaId());
 
         PedidoModel pedido = new PedidoModel();
         pedido.setStatus(pedidoDTO.status());
         pedido.setValorTotal(pedidoDTO.valorTotal());
         pedido.setServico(servico);
+        pedido.setPessoa(pessoa);
 
         pedidoRepository.persist(pedido);
         return pedido;

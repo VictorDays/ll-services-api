@@ -1,6 +1,5 @@
 package br.com.llservicos.resources;
 
-
 import br.com.llservicos.domain.pessoa.pessoajuridica.dtos.PessoaJuridicaDTO;
 import br.com.llservicos.services.pessoa.PessoaJuridicaService;
 import jakarta.inject.Inject;
@@ -9,6 +8,7 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response.Status;
 
 import java.util.logging.Logger;
 
@@ -53,6 +53,18 @@ public class PessoaJuridicaResource {
     public Response findAll() {
         LOG.info("Buscando Pessoa Juridica.");
         return Response.ok(service.findByAll()).build();
+    }
+
+    @PUT
+    @Transactional
+    @Path("/{id}")
+    public Response updResponse(@PathParam("id") Long id, PessoaJuridicaDTO dto){
+        try {
+            service.update(dto, id);
+            return Response.noContent().build();
+        } catch (Exception e) {
+            return Response.status(Status.NOT_FOUND).build();
+        }
     }
 
 }

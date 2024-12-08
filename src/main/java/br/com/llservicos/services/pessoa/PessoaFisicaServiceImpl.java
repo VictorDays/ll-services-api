@@ -1,12 +1,12 @@
 package br.com.llservicos.services.pessoa;
 
 import br.com.llservicos.domain.endereco.EnderecoModel;
+import br.com.llservicos.domain.endereco.dtos.EnderecoDTO;
 import br.com.llservicos.domain.pessoa.pessoafisica.PessoaFisicaModel;
 import br.com.llservicos.domain.pessoa.pessoafisica.dtos.PessoaFisicaDTO;
 import br.com.llservicos.domain.pessoa.pessoafisica.dtos.PessoaFisicaResponseDTO;
-import br.com.llservicos.domain.usuario.Perfil;
-import br.com.llservicos.domain.usuario.UsuarioModel;
 import br.com.llservicos.repositories.PessoaFisicaRepository;
+import br.com.llservicos.services.endereco.EnderecoService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityNotFoundException;
@@ -15,12 +15,16 @@ import jakarta.ws.rs.NotFoundException;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
-public class PessoaFisicaServiceImpl implements PessoaFisicaService{
+public class PessoaFisicaServiceImpl implements PessoaFisicaService {
     @Inject
     PessoaFisicaRepository fisicaRepository;
+
+    @Inject
+    EnderecoService enderecoService;
 
     @Override
     @Transactional
@@ -36,13 +40,8 @@ public class PessoaFisicaServiceImpl implements PessoaFisicaService{
         var person = new PessoaFisicaModel();
         person.setNome(dto.nome());
         person.setEmail(dto.email());
+        person.setTelefone(dto.telefone());
         person.setCpf(dto.cpf());
-
-        var usuario = new UsuarioModel();
-        usuario.setPerfil(Perfil.valueOf(dto.usuario().perfil()));
-        usuario.setTelefone(dto.usuario().telefone());
-        usuario.setSenha(dto.usuario().senha());
-        person.setUsuario(usuario);
 
         // Configure a lista de endereços
         if (dto.enderecos() != null && !dto.enderecos().isEmpty()) {
@@ -75,7 +74,35 @@ public class PessoaFisicaServiceImpl implements PessoaFisicaService{
     @Override
     @Transactional
     public PessoaFisicaResponseDTO update(PessoaFisicaDTO dto, Long id) {
-        return null;
+        PessoaFisicaModel pessoa = fisicaRepository.findById(id);
+        pessoa.setNome(dto.nome());
+        pessoa.setEmail(dto.email());
+        pessoa.setTelefone(dto.telefone());
+        pessoa.setCpf(dto.cpf());
+
+        // Configure a lista de endereços
+        if (dto.enderecos() != null) {
+            for (EnderecoDTO endDTO : dto.enderecos()) {
+                // Verifica se o endereço já existe
+                Optional<EnderecoModel> enderecoExistente = pessoa.getEnderecos().stream()
+                        .filter(end -> end.getLogadouro().equals(endDTO.logradouro()) &&
+                                end.getNumero().equals(endDTO.numero()))
+                        .findFirst();
+                        
+                if (enderecoExistente.isPresent()) {
+                    // Atualiza o endereço existente
+                    EnderecoModel endereco = enderecoExistente.get();
+                    endereco.setLogadouro(endDTO.logradouro());
+                } else {
+                    // Cria um novo endereço
+                    enderecoService.adicionaEndBot(id, endDTO);
+                }
+            }
+        }
+
+        // Persista o novo cliente
+        fisicaRepository.persist(pessoa);
+        return PessoaFisicaResponseDTO.valueOf(pessoa);
     }
 
     @Override
