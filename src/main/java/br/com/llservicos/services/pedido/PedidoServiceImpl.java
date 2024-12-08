@@ -92,8 +92,12 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     @Transactional
     public PedidoModel save(PedidoModel pedido) {
-        pedidoRepository.persist(pedido);
-        return pedido;
+        if (pedido.getId() == 0) { // ID == 0 -> Novo objeto
+            pedidoRepository.getEntityManager().persist(pedido);
+            return pedido;
+        } else { // ID != 0 -> Objeto existente
+            return pedidoRepository.getEntityManager().merge(pedido);
+        }
     }
 
     @Override
