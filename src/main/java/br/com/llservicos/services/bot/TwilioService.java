@@ -1,6 +1,8 @@
-/*package br.com.llservicos.services.bot;
+package br.com.llservicos.services.bot;
 
 import br.com.llservicos.domain.endereco.dtos.EnderecoDTO;
+import br.com.llservicos.domain.endereco.dtos.EnderecoResponseDTO;
+import br.com.llservicos.domain.pessoa.PessoaModel;
 import br.com.llservicos.domain.pessoa.dtos.PessoaResponseDTO;
 import br.com.llservicos.domain.pessoa.pessoafisica.PessoaFisicaModel;
 import br.com.llservicos.domain.pessoa.pessoafisica.dtos.PessoaFisicaDTO;
@@ -8,6 +10,9 @@ import br.com.llservicos.domain.pessoa.pessoafisica.dtos.PessoaFisicaResponseDTO
 import br.com.llservicos.domain.pessoa.pessoajuridica.PessoaJuridicaModel;
 import br.com.llservicos.domain.pessoa.pessoajuridica.dtos.PessoaJuridicaDTO;
 import br.com.llservicos.domain.pessoa.pessoajuridica.dtos.PessoaJuridicaResponseDTO;
+import br.com.llservicos.domain.servico.dto.ServicoResponseDTO;
+import br.com.llservicos.repositories.EnderecoRepository;
+import br.com.llservicos.repositories.PessoaRepository;
 import br.com.llservicos.repositories.ServicoRepository;
 import br.com.llservicos.services.pessoa.PessoaFisicaService;
 import br.com.llservicos.services.pessoa.PessoaJuridicaService;
@@ -40,6 +45,12 @@ public class TwilioService {
 
     @Inject
     ServicoRepository servicoRepository;
+
+    @Inject
+    PessoaRepository pessoaRepository;
+
+    @Inject
+    EnderecoRepository enderecoRepository;
 
     @Inject
     PessoaService pessoaService;
@@ -83,13 +94,21 @@ public class TwilioService {
         PessoaResponseDTO usuario = pessoaService.buscarPessoaPorTelefone(telefone);
 
 
+        //Verifica se vai querer apenas um endereço
+        boolean orcamento = false;
+
+        //Verifica se vai querer apenas um endereço
+        boolean orcamento = false;
+
         if ("initial".equals(currentState)) {
             // Enviar mensagem de boas-vindas e opções iniciais
             replyMessage = "Olá! Sou o assistente virtual da LL Serviços. Estou aqui para ajudar com os nossos serviços de jardinagem. Como posso ajudar você hoje? \n1. Solicitar um serviço. \n2. Conhecer os serviços de jardinagem. \n3. Acompanhar serviço. \n4. Falar com um atendente.";
             sessionMap.put(from, "awaiting_option"); // Aguardando uma resposta válida
         } else {
-            List<String> nomeServico = servicoRepository.listarNome();
-            List<String> nomeDescricao = servicoRepository.listarNomeEDescricao();
+            List<String> nomeServico = servicoRepository.findAllNomesOrderedById();
+            List<String> nomeDescricao = servicoRepository.findAllDescricoesOrderedById();
+            List<EnderecoResponseDTO> enderecoEscolhidoParaServico= null;
+            ServicoResponseDTO servicoEscolhido = null;
             switch (currentState) {
                 case "awaiting_option": // Aguardar uma opção do menu inicial
                     switch (body.trim()) {
@@ -149,6 +168,8 @@ public class TwilioService {
                     } else {
                         // Verifica se o serviço fornecido pelo usuário está na lista (ignorando maiúsculas e minúsculas)
                         boolean encontrado = false;
+                        Long numeService = Long.parseLong(body);
+                        servicoEscolhido = servicoRepository.buscarPorId(numeService);
                         for (String servico : nomeServico) {
                             if (servico.equalsIgnoreCase(body)) {
                                 encontrado = true;
@@ -277,12 +298,12 @@ public class TwilioService {
                         PessoaJuridicaDTO pessoaJuridica = tempPessoaJuridica.get(from);
                         pessoaJuridica.setCnpj(body.trim());
                         sessionMap.put(from, "cadastrar_endereco");
-                        replyMessage = "Agora vamos cadastrar o endereço que você deseja que seja feito o serviço escolhido. Digite o nome da  cidade?";
+                        replyMessage = "Agora vamos cadastrar o endereço completo que você deseja que seja feito o serviço escolhido.";
                     } else {
-                        replyMessage = "Por favor, informe seu endereço:";
+                        replyMessage = "Por favor, informe seu endereço completo:";
                     }
                     break;
-
+                //Cadastrar Endereco
                 case "cadastrar_endereco":
                     if (!body.isEmpty()) {
                         if (statusPF=true){
@@ -330,6 +351,26 @@ public class TwilioService {
                             mensagemConfirmacao.append("3- Alterar cadastro\n");
                             mensagemConfirmacao.append("4- Voltar ao menu principal\n");
                             replyMessage = mensagemConfirmacao.toString();
+                        }else{
+                            //Seguindo o fluxo do orçamento...
+                            PessoaResponseDTO pessoa = pessoaService.buscarPessoaPorTelefone(telefone);
+
+                            // Recupera os endereços existentes
+                            List<EnderecoDTO> enderecos = pessoa.getEnderecos();
+                            if (enderecos == null) {
+                                enderecos = new ArrayList<>();
+                            }
+
+                            // Adiciona o novo endereço
+                            enderecos.add(new EnderecoDTO(body, null, null, null, null, null, null));
+
+                            // Atualiza a lista de endereços da pessoa
+                            pessoa.setEnderecos(enderecos);
+
+                            // Atualiza a pessoa com o novo endereço
+                            pessoaService.update(pessoa.id());
+
+
                         }
                     } else {
                         replyMessage = "Por favor, informe seu endereço:";
@@ -338,9 +379,32 @@ public class TwilioService {
 
                 case "usuarioComCadastro":
                     if (body.equalsIgnoreCase("1")) {
-                        replyMessage = "fisica";
+                        sessionMap.put(from, "verificar_endereco");
+
+                        StringBuilder mensagem = new StringBuilder("De acordo com seu cadastro "+usuario.nome() + ", os seus endereços cadastro são esses!\n");
+                        mensagem.append("Qual é o local onde o serviço será realizado?\n");
+
+                        PessoaResponseDTO pessoa = pessoaService.buscarPessoaPorTelefone(telefone);
+                        List<EnderecoResponseDTO> enderecos = enderecoRepository.findByPessoaId(pessoa.id());
+                        for (int i = 0; i < enderecos.size(); i++) {
+                            mensagem.append(i).append(". ").append(enderecos.get(i)).append(".");
+                        }
+                        mensagem.append("Digite Adicionar para um novo endereço.\n");
                     } else if (body.equalsIgnoreCase("2")) {
-                        replyMessage = "fisica";
+                        orcamento = true;
+                        sessionMap.put(from, "verificar_endereco");
+
+                        StringBuilder mensagem = new StringBuilder("De acordo com seu cadastro "+usuario.nome() + ", os seus endereços cadastro são esses!\n");
+                        mensagem.append("Qual é o local onde o serviço será realizado?\n");
+
+                        PessoaResponseDTO pessoa = pessoaService.buscarPessoaPorTelefone(telefone);
+                        List<EnderecoResponseDTO> enderecos = enderecoRepository.findByPessoaId(pessoa.id());
+                        for (int i = 0; i < enderecos.size(); i++) {
+                            mensagem.append(i).append(". ").append(enderecos.get(i)).append(".");
+                        }
+                        mensagem.append("Digite Adicionar para um novo endereço.\n");
+
+                        replyMessage = mensagem.toString();
                     } else if (body.equalsIgnoreCase("3")) {
                         replyMessage = "fisica";
                     } else if (body.equalsIgnoreCase("4")) {
@@ -357,6 +421,38 @@ public class TwilioService {
                         replyMessage = mensagem.toString();
                     }
                     break;
+
+                case "verificar_endereco":
+                    body = body.trim();  // Remove espaços antes e depois da string
+                    if (body.equalsIgnoreCase("Adicionar")){
+                        sessionMap.put(from, "cadastrar_endereco");
+                        replyMessage = "Digite o endereço completo que você deseja que seja feito o serviço: ";
+                    }
+                    else{
+                        try {
+                            Integer enderecoEscolhido = Integer.parseInt(body);  // Converte a string para inteiro
+                            System.out.println("Número convertido: " + enderecoEscolhido);
+                        } catch (NumberFormatException e) {
+                            sessionMap.put(from, "verificar_endereco");
+                            replyMessage =  "Digite o endereço escolhido ou Adicionar para adicionar um endereço";
+                            // Aqui você pode lançar uma exceção personalizada ou tomar outra ação
+                        }
+                    }
+                    StringBuilder mensagem = new StringBuilder(usuario.nome() + ", por favor, escolha uma das opções abaixo: 😆\n");
+
+                    break;
+
+                case "fazer_orcamento":
+                    body = body.trim();
+                    if (orcamento==true){
+                        replyMessage = usuario.nome()+" você escolheu o serviço " + servicoEscolhido +
+                                ", para o endenreço " + enderecoEscolhidoParaServico + ". Nossa equipe entrará em contato em breve.";
+                    }
+                    else{
+
+                    }
+                    break;
+
                 case "contato_colaborador":
                     body = body.trim();  // Remove espaços antes e depois da string
 
@@ -386,7 +482,6 @@ public class TwilioService {
 
     public PessoaJuridicaResponseDTO criarPessoaJuridica(PessoaJuridicaDTO pj) {
         try {
-
             return pessoaJuridicaService.insert(pj);
         } catch (Exception e) {
             // Tratamento ou log da exceção
@@ -395,4 +490,4 @@ public class TwilioService {
         }
     }
 
-}*/
+}

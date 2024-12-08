@@ -5,9 +5,9 @@ import br.com.llservicos.domain.endereco.EnderecoModel;
 public record EnderecoResponseDTO(
     Long id,
     String logradouro,
-    String complemento,
     String bairro,
     Integer numero,
+    String complemento,
     String cep,
     String cidade,
     String estado
@@ -17,9 +17,8 @@ public record EnderecoResponseDTO(
         return new EnderecoResponseDTO(
             endereco.getId(),
             endereco.getLogadouro(),
-            endereco.getComplemento(),
             endereco.getBairro(),
-            endereco.getNumero(),
+            endereco.getNumero(), endereco.getComplemento(),
             endereco.getCep(),
             endereco.getCidade(),
             endereco.getEstado()
