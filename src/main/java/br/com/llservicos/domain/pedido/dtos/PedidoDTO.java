@@ -7,6 +7,7 @@ public record PedidoDTO(
         @NotBlank(message = "O campo valor não pode ser nulo.") Double valorTotal,
         @NotBlank(message = "O campo status não pode ser nulo.") String status,
         @NotNull(message = "O campo servicoId não pode ser nulo.") Long servicoId,
-        Long pessoaId
+        Long pessoaFisica,
+        Long pessoaJuridica
         ) {
 }

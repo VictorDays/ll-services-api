@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import br.com.llservicos.domain.pedido.PedidoModel;
 import br.com.llservicos.domain.pedido.dtos.PedidoDTO;
+import br.com.llservicos.domain.pedido.dtos.PedidoResponseDTO;
 import br.com.llservicos.domain.pessoa.PessoaModel;
 import br.com.llservicos.domain.servico.ServicoModel;
 import br.com.llservicos.repositories.PedidoRepository;
@@ -32,18 +33,30 @@ public class PedidoServiceImpl implements PedidoService {
 
     @Override
     @Transactional
-    public PedidoModel createPedido(PedidoDTO pedidoDTO) {
+    public PedidoResponseDTO createPedido(PedidoDTO pedidoDTO) {
         ServicoModel servico = servicoRepository.findById(pedidoDTO.servicoId());
-        PessoaModel pessoa = pessoaRepository.findById(pedidoDTO.pessoaId());
-
         PedidoModel pedido = new PedidoModel();
-        pedido.setStatus(pedidoDTO.status());
-        pedido.setValorTotal(pedidoDTO.valorTotal());
-        pedido.setServico(servico);
-        pedido.setPessoa(pessoa);
 
-        pedidoRepository.persist(pedido);
-        return pedido;
+        if (pedidoDTO.pessoaFisica() == null) {
+            PessoaModel pessoa = pessoaRepository.findById(pedidoDTO.pessoaFisica());
+
+            pedido.setStatus(pedidoDTO.status());
+            pedido.setValorTotal(pedidoDTO.valorTotal());
+            pedido.setServico(servico);
+            pedido.setPessoa(pessoa);
+
+            pedidoRepository.persist(pedido);
+        } else {
+            PessoaModel pessoa = pessoaRepository.findById(pedidoDTO.pessoaJuridica());
+
+            pedido.setStatus(pedidoDTO.status());
+            pedido.setValorTotal(pedidoDTO.valorTotal());
+            pedido.setServico(servico);
+            pedido.setPessoa(pessoa);
+
+            pedidoRepository.persist(pedido);
+        }
+        return PedidoResponseDTO.valueOf(pedido);
     }
 
     @Override

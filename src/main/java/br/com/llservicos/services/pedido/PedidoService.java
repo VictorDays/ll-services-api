@@ -5,11 +5,11 @@ import java.util.Optional;
 
 import br.com.llservicos.domain.pedido.PedidoModel;
 import br.com.llservicos.domain.pedido.dtos.PedidoDTO;
-
+import br.com.llservicos.domain.pedido.dtos.PedidoResponseDTO;
 
 public interface PedidoService {
 
-public PedidoModel createPedido(PedidoDTO pedidoDTO);
+public PedidoResponseDTO createPedido(PedidoDTO pedidoDTO);
 
 public PedidoModel updatePedido(Long id, PedidoDTO pedidoDTO);
 
