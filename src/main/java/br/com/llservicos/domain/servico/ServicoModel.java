@@ -1,9 +1,6 @@
 package br.com.llservicos.domain.servico;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class ServicoModel {
@@ -11,7 +8,9 @@ public class ServicoModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "nome", nullable = false)
     private String nome;
+    @Column(name = "descricao", nullable = false)
     private String descricao;
 
     // Construtor sem parâmetros (necessário para o Hibernate)

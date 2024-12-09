@@ -30,7 +30,7 @@ public class PessoaFisicaServiceImpl implements PessoaFisicaService {
     @Transactional
     public PessoaFisicaResponseDTO insert(PessoaFisicaDTO dto) throws Exception {
         // Verifique se o cpf já existe
-        var pessoa = fisicaRepository.findByCpf(dto.cpf());
+        var pessoa = fisicaRepository.findByCpf(dto.getCpf());
 
         if (pessoa != null) {
             throw new Exception("CPF já cadastrado!" + pessoa.getClass().getName());
@@ -38,14 +38,14 @@ public class PessoaFisicaServiceImpl implements PessoaFisicaService {
 
         // Crie um novo
         var person = new PessoaFisicaModel();
-        person.setNome(dto.nome());
-        person.setEmail(dto.email());
-        person.setTelefone(dto.telefone());
-        person.setCpf(dto.cpf());
+        person.setNome(dto.getNome());
+        person.setEmail(dto.getEmail());
+        person.setTelefone(dto.getTelefone());
+        person.setCpf(dto.getCpf());
 
         // Configure a lista de endereços
-        if (dto.enderecos() != null && !dto.enderecos().isEmpty()) {
-            List<EnderecoModel> enderecos = dto.enderecos().stream()
+        if (dto.getEnderecos() != null && !dto.getEnderecos().isEmpty()) {
+            List<EnderecoModel> enderecos = dto.getEnderecos().stream()
                     .map(end -> {
                         var endereco = new EnderecoModel();
                         endereco.setCep(end.cep());
@@ -75,14 +75,14 @@ public class PessoaFisicaServiceImpl implements PessoaFisicaService {
     @Transactional
     public PessoaFisicaResponseDTO update(PessoaFisicaDTO dto, Long id) {
         PessoaFisicaModel pessoa = fisicaRepository.findById(id);
-        pessoa.setNome(dto.nome());
-        pessoa.setEmail(dto.email());
-        pessoa.setTelefone(dto.telefone());
-        pessoa.setCpf(dto.cpf());
+        pessoa.setNome(dto.getNome());
+        pessoa.setEmail(dto.getEmail());
+        pessoa.setTelefone(dto.getTelefone());
+        pessoa.setCpf(dto.getCpf());
 
         // Configure a lista de endereços
-        if (dto.enderecos() != null) {
-            for (EnderecoDTO endDTO : dto.enderecos()) {
+        if (dto.getEnderecos() != null) {
+            for (EnderecoDTO endDTO : dto.getEnderecos()) {
                 // Verifica se o endereço já existe
                 Optional<EnderecoModel> enderecoExistente = pessoa.getEnderecos().stream()
                         .filter(end -> end.getLogadouro().equals(endDTO.logradouro()) &&

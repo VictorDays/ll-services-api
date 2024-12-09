@@ -6,11 +6,11 @@ import jakarta.validation.constraints.NotBlank;
 
 import java.util.List;
 
-public class PessoaFisicaDTO {
+public class PessoaJuridicaDTO {
     @NotBlank(message = "O campo nome não pode ser nulo.")
     private String nome;
 
-    private String cpf;
+    private String cnpj;
 
     @Email(message = "O e-mail deve ser válido.")
     private String email;
@@ -20,13 +20,13 @@ public class PessoaFisicaDTO {
     private List<EnderecoDTO> enderecos;
 
     // Construtor padrão
-    public PessoaFisicaDTO() {
+    public PessoaJuridicaDTO() {
     }
 
     // Construtor com todos os argumentos
-    public PessoaFisicaDTO(String nome, String cpf, String email, String telefone, List<EnderecoDTO> enderecos) {
+    public PessoaJuridicaDTO(String nome, String cnpj, String email, String telefone, List<EnderecoDTO> enderecos) {
         this.nome = nome;
-        this.cpf = cpf;
+        this.cnpj = cnpj;
         this.email = email;
         this.telefone = telefone;
         this.enderecos = enderecos;
@@ -41,12 +41,12 @@ public class PessoaFisicaDTO {
         this.nome = nome;
     }
 
-    public String getCpf() {
-        return cpf;
+    public String getCnpj() {
+        return cnpj;
     }
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
+    public void setCnpj(String cnpj) {
+        this.cnpj = cnpj;
     }
 
     public String getEmail() {
@@ -76,9 +76,9 @@ public class PessoaFisicaDTO {
     // Método toString (opcional, útil para depuração)
     @Override
     public String toString() {
-        return "PessoaFisicaDTO{" +
+        return "PessoaJuridicaDTO{" +
                 "nome='" + nome + '\'' +
-                ", cpf='" + cpf + '\'' +
+                ", cnpj='" + cnpj + '\'' +
                 ", email='" + email + '\'' +
                 ", telefone='" + telefone + '\'' +
                 ", enderecos=" + enderecos +

@@ -29,7 +29,7 @@ public class PessoaJuridicaServiceImpl implements PessoaJuridicaService{
     @Override
     @Transactional
     public PessoaJuridicaResponseDTO insert(PessoaJuridicaDTO dto) throws Exception{
-        var juridica = juridicaRepository.findByCnpj(dto.cnpj());
+        var juridica = juridicaRepository.findByCnpj(dto.getCnpj());
 
         if (juridica != null) {
             throw new Exception("CNPJ já cadastrado!" + juridica.getClass().getName());
@@ -37,14 +37,14 @@ public class PessoaJuridicaServiceImpl implements PessoaJuridicaService{
 
         //Criar novo
         var pJuridica = new PessoaJuridicaModel();
-        pJuridica.setNome(dto.nome());
-        pJuridica.setEmail(dto.email());
-        pJuridica.setCnpj(dto.cnpj());
-        pJuridica.setTelefone(dto.telefone());
+        pJuridica.setNome(dto.getNome());
+        pJuridica.setEmail(dto.getEmail());
+        pJuridica.setCnpj(dto.getCnpj());
+        pJuridica.setTelefone(dto.getTelefone());
 
         // Configure a lista de endereços
-        if (dto.enderecos() != null && !dto.enderecos().isEmpty()) {
-            List<EnderecoModel> enderecos = dto.enderecos().stream()
+        if (dto.getEnderecos() != null && !dto.getEnderecos().isEmpty()) {
+            List<EnderecoModel> enderecos = dto.getEnderecos().stream()
                     .map(end -> {
                         var endereco = new EnderecoModel();
                         endereco.setCep(end.cep());
@@ -74,14 +74,14 @@ public class PessoaJuridicaServiceImpl implements PessoaJuridicaService{
     @Transactional
     public PessoaJuridicaResponseDTO update(PessoaJuridicaDTO dto, Long id) {
         PessoaJuridicaModel pJuridica = juridicaRepository.findById(id);
-        pJuridica.setNome(dto.nome());
-        pJuridica.setEmail(dto.email());
-        pJuridica.setCnpj(dto.cnpj());
-        pJuridica.setTelefone(dto.telefone());
+        pJuridica.setNome(dto.getNome());
+        pJuridica.setEmail(dto.getEmail());
+        pJuridica.setCnpj(dto.getCnpj());
+        pJuridica.setTelefone(dto.getTelefone());
 
         // Configure a lista de endereços
-        if (dto.enderecos() != null) {
-            for (EnderecoDTO endDTO : dto.enderecos()) {
+        if (dto.getEnderecos() != null) {
+            for (EnderecoDTO endDTO : dto.getEnderecos()) {
                 // Verifica se o endereço já existe
                 Optional<EnderecoModel> enderecoExistente = pJuridica.getEnderecos().stream()
                         .filter(end -> end.getLogadouro().equals(endDTO.logradouro()) &&

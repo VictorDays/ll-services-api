@@ -7,6 +7,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class PessoaRepository implements PanacheRepository<PessoaModel> {
     public PessoaModel findBytelefone(String telefone) {
+
         return find("telefone = ?1", telefone).firstResult();
     }
 
