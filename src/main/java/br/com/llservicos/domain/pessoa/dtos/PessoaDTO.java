@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotBlank;
 public record PessoaDTO(
         @NotBlank(message = "O campo nome não pode ser nulo.") String nome,
         @Email(message = "O e-mail deve ser válido.") String email,
-        @NotBlank(message = "O campo Usuário não pode ser nulo.") UsuarioDTO usuario,
+        //UsuarioDTO usuario,
         String telefone,
         EnderecoDTO endereco
 

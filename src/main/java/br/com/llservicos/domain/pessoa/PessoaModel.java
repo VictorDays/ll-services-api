@@ -24,9 +24,9 @@ public class PessoaModel {
     private List<EnderecoModel> enderecos = new ArrayList<>();
 
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "usuario_id", referencedColumnName = "id")
-    private UsuarioModel usuario;
+    //@OneToOne(cascade = CascadeType.ALL)
+    //@JoinColumn(name = "usuario_id", referencedColumnName = "id")
+    //private UsuarioModel usuario;
 
 
     public void setId(Long id) {
@@ -53,12 +53,6 @@ public class PessoaModel {
         this.email = email;
     }
 
-    public UsuarioModel getUsuario() {
-        return usuario;
-    }
-    public void setUsuario(UsuarioModel usuarioModel) {
-        this.usuario = usuarioModel;
-    }
 
     public List<EnderecoModel> getEnderecos() {
         return enderecos;

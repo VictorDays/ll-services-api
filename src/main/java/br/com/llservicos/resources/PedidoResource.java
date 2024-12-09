@@ -4,8 +4,12 @@ import java.util.List;
 import java.util.Optional;
 
 import br.com.llservicos.domain.pedido.PedidoModel;
+import br.com.llservicos.domain.pedido.dtos.PedidoDTO;
+import br.com.llservicos.domain.pessoa.pessoafisica.dtos.PessoaFisicaDTO;
 import br.com.llservicos.services.pedido.PedidoService;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
+import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -23,44 +27,40 @@ public class PedidoResource {
     }
 
     @POST
-    public Response createPedido(PedidoModel pedido) {
-        PedidoModel createdPedido = pedidoService.save(pedido); // Use o serviço para salvar o pedido
-        return Response.status(Response.Status.CREATED).entity(createdPedido).build();
-    }
+    public Response createPedido(PedidoDTO pedido) throws Exception{
+        try {
+            return Response.status(Response.Status.CREATED).entity(pedidoService.createPedido(pedido)).build();
+        } catch (ConstraintViolationException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Erro ao inserir Pedido: " + e.getMessage()).build();
 
-    @GET
-    @Path("{id}")
-    public Response getPedidoById(@PathParam("id") Long id) {
-        Optional<PedidoModel> pedido = pedidoService.findById(id); // Use o serviço para encontrar o pedido
-        return pedido.map(value -> Response.ok(value).build())
-                .orElseGet(() -> Response.status(Response.Status.NOT_FOUND).build());
-    }
-
-    @GET
-    public Response getAllPedidos() {
-        List<PedidoModel> pedidos = pedidoService.findAll(); // Use o serviço para obter todos os pedidos
-        return Response.ok(pedidos).build();
-    }
-
-    @PUT
-    @Path("{id}")
-    public Response updatePedido(@PathParam("id") Long id, PedidoModel pedido) {
-        Optional<PedidoModel> existingPedido = pedidoService.findById(id); // Use o serviço
-        if (existingPedido.isPresent()) {
-            pedido.setId(id);
-            PedidoModel updatedPedido = pedidoService.save(pedido); // Use o serviço para atualizar o pedido
-            return Response.ok(updatedPedido).build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
         }
     }
 
     @DELETE
-    @Path("{id}")
-    public Response deletePedido(@PathParam("id") Long id) {
-        if (pedidoService.deletePedido(id)) { // Verifique se a deleção foi bem-sucedida
+    @Transactional
+    @Path("/{id}")
+    public Response delete(@PathParam("id") Long id) {
+        try {
+            pedidoService.delete(id);
             return Response.noContent().build();
-        } else {
+        } catch (ConstraintViolationException e) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+    }
+
+    @GET
+    //@Permitall
+    public Response findAll() {
+        return Response.ok(pedidoService.getAllPedidos()).build();
+    }
+
+    @PUT
+    @Transactional
+    @Path("/{id}")
+    public Response updResponse(@PathParam("id") Long id, PessoaFisicaDTO dto){
+        try {
+            return Response.noContent().build();
+        } catch (Exception e) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
     }

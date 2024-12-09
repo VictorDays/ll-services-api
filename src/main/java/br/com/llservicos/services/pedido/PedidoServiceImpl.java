@@ -1,12 +1,17 @@
 package br.com.llservicos.services.pedido;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import br.com.llservicos.domain.pedido.PedidoModel;
+import br.com.llservicos.domain.pedido.Status;
 import br.com.llservicos.domain.pedido.dtos.PedidoDTO;
 import br.com.llservicos.domain.pedido.dtos.PedidoResponseDTO;
 import br.com.llservicos.domain.pessoa.PessoaModel;
+import br.com.llservicos.domain.pessoa.pessoafisica.PessoaFisicaModel;
+import br.com.llservicos.domain.pessoa.pessoafisica.dtos.PessoaFisicaResponseDTO;
 import br.com.llservicos.domain.servico.ServicoModel;
 import br.com.llservicos.repositories.PedidoRepository;
 import br.com.llservicos.repositories.PessoaFisicaRepository;
@@ -14,7 +19,10 @@ import br.com.llservicos.repositories.PessoaRepository;
 import br.com.llservicos.repositories.ServicoRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.NotFoundException;
+import jakarta.ws.rs.core.Response;
 
 @ApplicationScoped
 public class PedidoServiceImpl implements PedidoService {
@@ -23,7 +31,7 @@ public class PedidoServiceImpl implements PedidoService {
     PedidoRepository pedidoRepository;
 
     @Inject
-    ServicoRepository servicoRepository; // Repositório para buscar o serviço
+    ServicoRepository servicoRepository;
 
     @Inject
     PessoaRepository pessoaRepository;
@@ -31,112 +39,76 @@ public class PedidoServiceImpl implements PedidoService {
     @Inject
     PessoaFisicaRepository pessoaFisicaRepository;
 
+
     @Override
     @Transactional
-    public PedidoResponseDTO createPedido(PedidoDTO pedidoDTO) {
-        ServicoModel servico = servicoRepository.findById(pedidoDTO.servicoId());
+    public PedidoResponseDTO createPedido(PedidoDTO dto) {
+        ServicoModel servico =  servicoRepository.findById(dto.servicoId());
+        PessoaModel pessoa = pessoaRepository.findById(dto.pessoa());
+
         PedidoModel pedido = new PedidoModel();
+        pedido.setPessoa(pessoa);
+        pedido.setStatus(Status.AGENDADO);
+        pedido.setValorTotal(dto.valorTotal());
+        pedido.setServico(servico);
+        pedidoRepository.persist(pedido);
 
-        if (pedidoDTO.pessoaFisica() == null) {
-            PessoaModel pessoa = pessoaRepository.findById(pedidoDTO.pessoaFisica());
-
-            pedido.setStatus(pedidoDTO.status());
-            pedido.setValorTotal(pedidoDTO.valorTotal());
-            pedido.setServico(servico);
-            pedido.setPessoa(pessoa);
-
-            pedidoRepository.persist(pedido);
-        } else {
-            PessoaModel pessoa = pessoaRepository.findById(pedidoDTO.pessoaJuridica());
-
-            pedido.setStatus(pedidoDTO.status());
-            pedido.setValorTotal(pedidoDTO.valorTotal());
-            pedido.setServico(servico);
-            pedido.setPessoa(pessoa);
-
-            pedidoRepository.persist(pedido);
-        }
         return PedidoResponseDTO.valueOf(pedido);
     }
 
     @Override
-    @Transactional
-    public PedidoModel updatePedido(Long id, PedidoDTO pedidoDTO) {
+    public PedidoResponseDTO updatePedido(Long id, PedidoDTO dto) {
+        ServicoModel servico =  servicoRepository.findById(dto.servicoId());
+        PessoaModel pessoa = pessoaRepository.findById(dto.pessoa());
         PedidoModel pedido = pedidoRepository.findById(id);
-        if (pedido == null) {
-            throw new RuntimeException("Pedido não encontrado");
+
+        pedido.setPessoa(pessoa);
+        pedido.setStatus(Status.AGENDADO);
+        pedido.setValorTotal(dto.valorTotal());
+        pedido.setServico(servico);
+        pedidoRepository.persist(pedido);
+
+        return PedidoResponseDTO.valueOf(pedido);
+    }
+
+    @Override
+    public void delete(Long id) {
+        if (!pedidoRepository.deleteById(id))
+            throw new NotFoundException();
+    }
+
+    @Override
+    public PedidoResponseDTO getPedidoById(Long id) {
+        PedidoModel person = pedidoRepository.findById(id);
+        if (person == null) {
+            throw new EntityNotFoundException("Pedido não encontrado com ID: " + id);
         }
-
-        pedido.setStatus(pedidoDTO.status());
-        pedido.setValorTotal(pedidoDTO.valorTotal());
-
-        return pedido;
+        return PedidoResponseDTO.valueOf(person);
     }
 
     @Override
-    @Transactional
-    public boolean deletePedido(Long id) {
-        return pedidoRepository.deleteById(id);
+    public List<PedidoResponseDTO> getAllPedidos() {
+        return pedidoRepository.listAll().stream()
+                .map(e -> PedidoResponseDTO.valueOf(e)).toList();
     }
 
     @Override
-    public PedidoModel getPedidoById(Long id) {
-        PedidoModel pedido = pedidoRepository.findById(id);
-        if (pedido == null) {
-            throw new RuntimeException("Pedido não encontrado");
-        }
-        return pedido;
+    public List<PedidoResponseDTO> getPedidosByPessoaId(Long pessoaId) {
+        return null;
     }
 
     @Override
-    public List<PedidoModel> getAllPedidos() {
-        return pedidoRepository.findAll().list();
+    public List<PedidoResponseDTO> getPedidosByStatus(String status) {
+        return null;
     }
 
     @Override
-    public List<PedidoModel> getPedidosByPessoaId(Long pessoaId) {
-        return pedidoRepository.find("pessoaId", pessoaId).list();
+    public List<PedidoResponseDTO> getPedidosByDataServico(String dataServico) {
+        return null;
     }
 
     @Override
-    public List<PedidoModel> getPedidosByStatus(String status) {
-        return pedidoRepository.find("status", status).list();
-    }
-
-    @Override
-    public List<PedidoModel> getPedidosByDataServico(String dataServico) {
-        return pedidoRepository.find("dataServico", dataServico).list();
-    }
-
-    @Override
-    public List<PedidoModel> getPedidosByValorTotal(Double valorTotal) {
-        return pedidoRepository.find("valorTotal", valorTotal).list();
-    }
-
-    @Override
-    @Transactional
-    public PedidoModel save(PedidoModel pedido) {
-        if (pedido.getId() == 0) { // ID == 0 -> Novo objeto
-            pedidoRepository.getEntityManager().persist(pedido);
-            return pedido;
-        } else { // ID != 0 -> Objeto existente
-            return pedidoRepository.getEntityManager().merge(pedido);
-        }
-    }
-
-    @Override
-    public Optional<PedidoModel> findById(Long id) {
-        return pedidoRepository.findByIdOptional(id);
-    }
-
-    @Override
-    public List<PedidoModel> findAll() {
-        return pedidoRepository.listAll();
-    }
-
-    @Override
-    @Transactional
-    public void deleteById(Long id) {
-        pedidoRepository.deleteById(id);
+    public List<PedidoResponseDTO> getPedidosByValorTotal(Double valorTotal) {
+        return null;
     }
 }

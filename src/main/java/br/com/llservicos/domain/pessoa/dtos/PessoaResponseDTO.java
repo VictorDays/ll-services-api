@@ -8,8 +8,7 @@ public record PessoaResponseDTO(
         Long id,
         String nome,
         String email,
-        String telefone,
-        UsuarioResponseDTO usuario
+        String telefone
 
         //Falta enderecoResponseDTO @Emily
 ) {
@@ -18,8 +17,7 @@ public record PessoaResponseDTO(
                 pessoa.getId(),
                 pessoa.getNome(),
                 pessoa.getEmail(),
-                pessoa.getTelefone(),
-                UsuarioResponseDTO.valueOf(pessoa.getUsuario())
+                pessoa.getTelefone()
         );
     }
 }

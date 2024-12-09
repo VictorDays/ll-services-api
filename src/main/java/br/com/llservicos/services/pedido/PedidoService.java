@@ -11,29 +11,21 @@ public interface PedidoService {
 
 public PedidoResponseDTO createPedido(PedidoDTO pedidoDTO);
 
-public PedidoModel updatePedido(Long id, PedidoDTO pedidoDTO);
+public PedidoResponseDTO updatePedido(Long id, PedidoDTO pedidoDTO);
 
-public boolean deletePedido(Long id);
+public void delete(Long id);
 
-public PedidoModel getPedidoById(Long id);
+public PedidoResponseDTO getPedidoById(Long id);
 
-public List<PedidoModel> getAllPedidos();
+public List<PedidoResponseDTO> getAllPedidos();
 
-public List<PedidoModel> getPedidosByPessoaId(Long pessoaId);
+public List<PedidoResponseDTO> getPedidosByPessoaId(Long pessoaId);
 
-public List<PedidoModel> getPedidosByStatus(String status);
+public List<PedidoResponseDTO> getPedidosByStatus(String status);
 
-public List<PedidoModel> getPedidosByDataServico(String dataServico);
+public List<PedidoResponseDTO> getPedidosByDataServico(String dataServico);
 
-public List<PedidoModel> getPedidosByValorTotal(Double valorTotal);
-
-PedidoModel save(PedidoModel pedido);
-
-List<PedidoModel> findAll();
-
-void deleteById(Long id);
-
-Optional<PedidoModel> findById(Long id);
+public List<PedidoResponseDTO> getPedidosByValorTotal(Double valorTotal);
 
 }
    
