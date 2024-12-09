@@ -6,6 +6,7 @@ import java.util.Optional;
 import br.com.llservicos.domain.pedido.PedidoModel;
 import br.com.llservicos.domain.pedido.dtos.PedidoDTO;
 import br.com.llservicos.domain.pessoa.pessoafisica.dtos.PessoaFisicaDTO;
+import br.com.llservicos.domain.servico.ServicoModel;
 import br.com.llservicos.services.pedido.PedidoService;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -27,6 +28,7 @@ public class PedidoResource {
     }
 
     @POST
+    @Path("create")
     public Response createPedido(PedidoDTO pedido) throws Exception{
         try {
             return Response.status(Response.Status.CREATED).entity(pedidoService.createPedido(pedido)).build();
@@ -38,7 +40,7 @@ public class PedidoResource {
 
     @DELETE
     @Transactional
-    @Path("/{id}")
+    @Path("delete/{id}")
     public Response delete(@PathParam("id") Long id) {
         try {
             pedidoService.delete(id);
@@ -49,6 +51,7 @@ public class PedidoResource {
     }
 
     @GET
+    @Path("getall")
     //@Permitall
     public Response findAll() {
         return Response.ok(pedidoService.getAllPedidos()).build();
@@ -56,12 +59,20 @@ public class PedidoResource {
 
     @PUT
     @Transactional
-    @Path("/{id}")
+    @Path("update/{id}")
     public Response updResponse(@PathParam("id") Long id, PessoaFisicaDTO dto){
         try {
             return Response.noContent().build();
         } catch (Exception e) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
+    }
+
+    @GET
+    @Path("/getid/{id}")
+    public Response getServicoById(@PathParam("id") Long id) {
+        Optional<ServicoModel> servico = pedidoService.findById(id);
+        return servico.map(value -> Response.ok(value).build())
+                .orElseGet(() -> Response.status(Response.Status.NOT_FOUND).build());
     }
 }

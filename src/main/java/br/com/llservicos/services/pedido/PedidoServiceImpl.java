@@ -111,4 +111,9 @@ public class PedidoServiceImpl implements PedidoService {
     public List<PedidoResponseDTO> getPedidosByValorTotal(Double valorTotal) {
         return null;
     }
+
+    @Override
+    public Optional<ServicoModel> findById(Long id) {
+        return servicoRepository.findByIdOptional(id);
+    }
 }

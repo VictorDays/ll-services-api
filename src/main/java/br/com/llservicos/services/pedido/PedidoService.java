@@ -6,6 +6,7 @@ import java.util.Optional;
 import br.com.llservicos.domain.pedido.PedidoModel;
 import br.com.llservicos.domain.pedido.dtos.PedidoDTO;
 import br.com.llservicos.domain.pedido.dtos.PedidoResponseDTO;
+import br.com.llservicos.domain.servico.ServicoModel;
 
 public interface PedidoService {
 
@@ -26,6 +27,8 @@ public List<PedidoResponseDTO> getPedidosByStatus(String status);
 public List<PedidoResponseDTO> getPedidosByDataServico(String dataServico);
 
 public List<PedidoResponseDTO> getPedidosByValorTotal(Double valorTotal);
+
+Optional<ServicoModel> findById(Long id);
 
 }
    

@@ -24,6 +24,7 @@ public class ServicoResource {
     }
 
     @POST
+    @Path("/create")
     public Response createServico(ServicoDTO servicoDTO) {
         // Convertendo o DTO para o modelo
         ServicoModel servico = new ServicoModel();
@@ -38,7 +39,7 @@ public class ServicoResource {
     }
 
     @GET
-    @Path("{id}")
+    @Path("/getid/{id}")
     public Response getServicoById(@PathParam("id") Long id) {
         Optional<ServicoModel> servico = servicoService.findById(id);
         return servico.map(value -> Response.ok(value).build())
@@ -46,13 +47,14 @@ public class ServicoResource {
     }
 
     @GET
+    @Path("/getall")
     public Response getAllServicos() {
         List<ServicoModel> servicos = servicoService.findAll();
         return Response.ok(servicos).build();
     }
 
     @PUT
-    @Path("{id}")
+    @Path("/update/{id}")
     public Response updateServico(@PathParam("id") Long id, ServicoModel servico) {
         Optional<ServicoModel> existingServico = servicoService.findById(id);
         if (existingServico.isPresent()) {
@@ -65,7 +67,7 @@ public class ServicoResource {
     }
 
     @DELETE
-    @Path("{id}")
+    @Path("/delete/{id}")
     public Response deleteServico(@PathParam("id") Long id) {
         Optional<ServicoModel> servico = servicoService.findById(id);
         if (servico.isPresent()) {

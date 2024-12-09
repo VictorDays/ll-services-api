@@ -26,13 +26,14 @@ public class EnderecoResource {
     EnderecoService enderecoService;
 
     @POST
+    @Path("create")
     public Response create(@Valid EnderecoDTO enderecoDTO) {
         EnderecoResponseDTO endereco = enderecoService.insert(enderecoDTO);
         return Response.status(Response.Status.CREATED).entity(endereco).build();
     }
 
     @PUT
-    @Path("/{idEndereco}/{idPessoa}")
+    @Path("update/{idEndereco}/{idPessoa}")
     public Response update(
         @PathParam("idEndereco") Long idEndereco,
         @PathParam("idPessoa") Long idPessoa,
@@ -43,27 +44,28 @@ public class EnderecoResource {
     }
 
     @DELETE
-    @Path("/{idEndereco}")
+    @Path("delete/{idEndereco}")
     public Response delete(@PathParam("idEndereco") Long idEndereco) {
         enderecoService.delete(null, idEndereco);
         return Response.noContent().build();
     }
 
     @GET
-    @Path("/{idEndereco}")
+    @Path("getid/{idEndereco}")
     public Response findById(@PathParam("idEndereco") Long idEndereco) {
         EnderecoResponseDTO endereco = enderecoService.findById(idEndereco);
         return Response.ok(endereco).build();
     }
 
     @GET
-    @Path("/cep/{cep}")
+    @Path("getcep/{cep}")
     public Response findByCep(@PathParam("cep") String cep) {
         Log.infof("Buscando endereço pelo CEP: %s", cep);
         return Response.ok(enderecoService.findByCep(cep)).build();
     }
 
     @GET
+    @Path("getall")
     public Response findByAll() {
         Log.info("Buscando todos os endereços");
         return Response.ok(enderecoService.findByAll()).build();

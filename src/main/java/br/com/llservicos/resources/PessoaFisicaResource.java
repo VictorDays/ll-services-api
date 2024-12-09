@@ -24,6 +24,7 @@ public class PessoaFisicaResource {
 
     @POST
     @Transactional
+    @Path("create")
     //@RolesAllowed({ "Admin" })
     public Response insert(PessoaFisicaDTO dto) throws Exception {
         try {
@@ -37,7 +38,7 @@ public class PessoaFisicaResource {
 
     @DELETE
     @Transactional
-    @Path("/{id}")
+    @Path("delete/{id}")
     public Response delete(@PathParam("id") Long id) {
         try {
             LOG.info("Deletando o Pessoa Fisica");
@@ -50,6 +51,7 @@ public class PessoaFisicaResource {
     }
 
     @GET
+    @Path("getall")
     //@Permitall
     public Response findAll() {
         LOG.info("Buscando Pessoa Fisica.");
@@ -58,7 +60,7 @@ public class PessoaFisicaResource {
 
     @PUT
     @Transactional
-    @Path("/{id}")
+    @Path("update/{id}")
     public Response updResponse(@PathParam("id") Long id, PessoaFisicaDTO dto){
         try {
             service.update(dto, id);
